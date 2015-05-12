@@ -8,7 +8,8 @@ use App\Http\Controllers\Controller;
 //use Illuminate\Http\Request;
 use Request;
 
-class CategoryController extends Controller {
+class CategoryController extends Controller
+{
 
 	public function create()
     {
