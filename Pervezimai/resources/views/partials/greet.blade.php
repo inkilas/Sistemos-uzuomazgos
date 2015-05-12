@@ -10,6 +10,6 @@
     </div>
 @endif
     <div>
-
+        <img>
     </div>
 
