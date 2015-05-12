@@ -43,11 +43,15 @@ class OrdersController extends Controller {
     public function getsearch()
     {
         $ordersession = Session::get('order');
-        var_dump($ordersession);
+        if(!isset($ordersession['extra_services'])){
+            $ordersession['extra_services'] = 0;
+        }
+        $autos_by_categories = Category::find($ordersession['category_id'])->auto_registration()->where('extra_services', $ordersession['extra_services'])->get();
 
-        return view('orders.search', compact('ordersession'));
+        return view('orders.search', compact('autos_by_categories'));
 
     }
+
 
     public function store()
     {

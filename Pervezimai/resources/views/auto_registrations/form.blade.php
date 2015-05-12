@@ -22,8 +22,13 @@
 
     <br/>
     <br/>
-    {!! Form::label('auto_id', 'Pasirinkite automobilio tipą: ') !!}
-    {!! Form::select('auto_id', $auto_types, 1) !!}
+    @if(isset($id))
+        {!! Form::label('auto_id', 'Pasirinkite automobilio tipą: ') !!}
+        {!! Form::select('auto_id', $auto_types, $selected_auto) !!}
+    @else
+        {!! Form::label('auto_id', 'Pasirinkite automobilio tipą: ') !!}
+        {!! Form::select('auto_id', $auto_types, 1) !!}
+    @endif
     <br/>
 
     {!! Form::label('auto_city', 'Automobilio miestas arba adresas: ') !!}

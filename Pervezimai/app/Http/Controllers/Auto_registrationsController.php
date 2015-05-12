@@ -88,8 +88,9 @@ class Auto_registrationsController extends Controller {
         $categories = Category::lists('category', 'id');
         $countries = Country::lists('country', 'id');
         $auto_types = Auto_type::lists('auto_type', 'id');
+        $selected_auto = Auto_registration::find($id)->auto_id;
 
-        return view('auto_registrations.edit', compact('auto', 'categories', 'countries', 'auto_types', 'id'));
+        return view('auto_registrations.edit', compact('auto', 'categories', 'countries', 'auto_types', 'id', 'selected_auto'));
     }
 
     public function update($id, Auto_registrationRequest $request)

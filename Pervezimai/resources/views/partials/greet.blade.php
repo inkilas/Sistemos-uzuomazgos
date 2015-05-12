@@ -10,6 +10,6 @@
     </div>
 @endif
     <div>
-        <img src="">
+       <a href="{{ url('/') }}"> <img src="" alt="home"> </a>
     </div>
 
