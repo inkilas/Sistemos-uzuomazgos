@@ -24,15 +24,15 @@
     <br/>
     @if(isset($id))
         {!! Form::label('auto_id', 'Pasirinkite automobilio tipą: ') !!}
-        {!! Form::select('auto_id', $auto_types, $selected_auto) !!}
+        {!! Form::select('auto_id', $auto_types, $selected_auto, ['class' => 'btn btn-category dropdown-toggle']) !!}
     @else
         {!! Form::label('auto_id', 'Pasirinkite automobilio tipą: ') !!}
-        {!! Form::select('auto_id', $auto_types, 1) !!}
+        {!! Form::select('auto_id', $auto_types, 1, ['class' => 'btn btn-category dropdown-toggle']) !!}
     @endif
     <br/>
 
     {!! Form::label('auto_city', 'Automobilio miestas arba adresas: ') !!}
-    {!! Form::text('auto_city', null, ['class' => 'form-control', 'placeholder' => 'Įveskite miestą, kuriame automobilis dažniausiai būna']) !!}
+    {!! Form::text('auto_city', null, ['class' => 'form-control', 'placeholder' => 'Įveskite adresą, kuriame automobilis dažniausiai būna']) !!}
 
     {!! Form::label('price_km', 'Įkainis km/eur: ') !!}
     {!! Form::input('number', 'price_km', null, ['class' => 'form-control', 'step' => '0.01']) !!}

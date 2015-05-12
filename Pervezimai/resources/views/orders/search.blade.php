@@ -11,6 +11,7 @@
             <tr>
                 <th>Automobilis</th>
                 <th>Vežėjas</th>
+                <th>Adresas</th>
             </tr>
         </thead>
         <tbody>
@@ -19,6 +20,7 @@
                 @foreach($auto_by_category->user()->get() as $provider_by_category)
                         <td><input type="hidden" value="{{ $auto_by_category->id }}">{{ $auto_by_category->auto_name }}</td>
                         <td>{{ $provider_by_category->name }}</td>
+                        <td>{{ $provider_city = $auto_by_category->auto_city }}</td>
                 @endforeach
             </tr>
         @endforeach

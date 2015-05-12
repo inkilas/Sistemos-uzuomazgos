@@ -7,7 +7,7 @@
     {!! Form::open(['url' => 'orders/search']) !!}
         <div class="form-group">
             {!! Form::label('category_id', 'Pasirinkite pervežimo kategoriją: ') !!}
-            {!! Form::select('category_id', $categories, 1, ['required',]) !!}
+            {!! Form::select('category_id', $categories, 1, ['required', 'class' => 'btn btn-category dropdown-toggle']) !!}
             <br/>
             {!! Form::label('pickup_address', 'Paėmimo adresas: ') !!}
             {!! Form::text('pickup_address', null, ['class' => 'form-control', 'placeholder' => 'Gatvė, namo numeris, Miestas']) !!}
@@ -23,6 +23,7 @@
 
             {!! Form::label('extra_services', 'Papildomos paslaugos ') !!}
             {!! Form::input('checkbox', 'extra_services', '1') !!}
+
             <br/>
             {!! Form::label('order_comment', 'Komentaras: ') !!}
             {!! Form::textarea('order_comment', null, ['class' => 'form-control', 'placeholder' => 'Įveskite papildomus duomenis apie krovinį ir jo paėmimo bei pristatymo papildomus poreikius.']) !!}
