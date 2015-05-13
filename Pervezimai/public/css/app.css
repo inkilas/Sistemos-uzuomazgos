@@ -6240,3 +6240,13 @@ label,
     background-color: #47acff;
     border-color: #2e6da4;
 }
+.btn-primary-red {
+    color: #ffffff;
+    background-color: #b74736;
+    border-color: #b74736;
+}
+.btn-primary-red:hover {
+    color: #ffffff;
+    background-color: #982820;
+    border-color: #982820;
+}

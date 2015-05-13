@@ -46,9 +46,13 @@ class OrdersController extends Controller {
         if(!isset($ordersession['extra_services'])){
             $ordersession['extra_services'] = 0;
         }
+<<<<<<< HEAD
         var_dump($ordersession);
         $autos_by_categories = Category::find($ordersession['category_id'])->auto_registration()->where('extra_services', $ordersession['extra_services'])->get();
 
+=======
+        $autos_by_categories = Category::find($ordersession['category_id'])->auto_registration()->where('extra_services', $ordersession['extra_services'])->get();
+>>>>>>> origin/Dainius
         return view('orders.search', compact('autos_by_categories', 'ordersession'));
 
     }
