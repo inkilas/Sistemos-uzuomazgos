@@ -1,6 +1,0 @@
-LOAD DATA LOCAL
-INFILE 'D:\wamp/www/Sistemos-uzuomazgos/Pervezimai/europa_countries.TXT'
-INTO TABLE `countries`
-FIELDS TERMINATED BY '\t'
-LINES TERMINATED BY '\r\n'
-IGNORE 1 LINES;
