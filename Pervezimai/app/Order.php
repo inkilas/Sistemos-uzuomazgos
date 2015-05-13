@@ -11,6 +11,8 @@ class Order extends Model {
         'pickup_address',
         'deliver_address',
         'extra_address',
+        'order_key',
+        'auto_registration_id'
     ];
 
     protected $dates = ['order_date'];
@@ -37,6 +39,16 @@ class Order extends Model {
     public function order_category()
     {
         return $this->belongsTo('App\Category');
+    }
+
+    /**
+     * Vienas užsakymas turi daug auto_registracijų
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function provider_auto()
+    {
+        return $this->hasMany('App\Auto_registration');
     }
 
 

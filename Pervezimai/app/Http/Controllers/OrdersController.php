@@ -46,10 +46,8 @@ class OrdersController extends Controller {
         if(!isset($ordersession['extra_services'])){
             $ordersession['extra_services'] = 0;
         }
-        var_dump($ordersession['pickup_address']);
         $autos_by_categories = Category::find($ordersession['category_id'])->auto_registration()->where('extra_services', $ordersession['extra_services'])->get();
-
-        return view('orders.search', compact('autos_by_categories'));
+        return view('orders.search', compact('autos_by_categories', 'ordersession'));
 
     }
 
