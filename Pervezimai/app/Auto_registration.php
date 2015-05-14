@@ -54,6 +54,14 @@ class Auto_registration extends Model {
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function auto_orders()
+    {
+        return $this->hasMany('App\Order');
+    }
+
+    /**
      * Gauti sarassa saliu, kurios yra susietos su automobilio id
      *
      * @return mixed

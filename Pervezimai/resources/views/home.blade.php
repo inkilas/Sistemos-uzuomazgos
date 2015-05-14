@@ -11,6 +11,7 @@
                     @if(Auth::user() == true)
                         <div>
                             <a href="{{ action('OrdersController@create')}}">Naujas užsakymas</a><br>
+                            <a href="{{ action('OrdersController@index') }}">Mano užsakymai</a><br>
                             <a href="{{ action('Auto_registrationsController@index')}}">Jūsų užregistruoti automobiliai</a>
                         </div>
                     @endif

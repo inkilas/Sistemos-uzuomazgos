@@ -51,7 +51,7 @@ class Order extends Model {
      */
     public function provider_auto()
     {
-        return $this->hasMany('App\Auto_registration');
+        return $this->hasManyThrough('App\Auto_registration', 'App\User');
     }
 
 

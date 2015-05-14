@@ -28,7 +28,7 @@
             {!! Form::label('order_comment', 'Komentaras: ') !!}
             {!! Form::textarea('order_comment', null, ['class' => 'form-control', 'placeholder' => 'Įveskite papildomus duomenis apie krovinį ir jo paėmimo bei pristatymo papildomus poreikius.']) !!}
 
-            {!! Form::hidden('order_key', str_random(60)) !!}
+            {!! Form::hidden('order_key', $number) !!}
 
         </div>
         <div class="form-group">
