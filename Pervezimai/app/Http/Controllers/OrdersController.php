@@ -46,7 +46,7 @@ class OrdersController extends Controller {
         if(!isset($ordersession['extra_services'])){
             $ordersession['extra_services'] = 0;
         }
-        $autos_by_categories = Category::find($ordersession['category_id'])->auto_registration()->where('extra_services', $ordersession['extra_services'])->get();
+        $autos_by_categories = Category::find($ordersession['category_id'])->auto_registration()->get();
         return view('orders.search', compact('autos_by_categories', 'ordersession'));
 
     }
@@ -54,7 +54,20 @@ class OrdersController extends Controller {
 
     public function store()
     {
+        $ordersession = Session::get('order');
+        $providers_autos = Request::all();
 
+
+        foreach($providers_autos['provider_id'] as $key => $provider_auto) {
+            $order = $ordersession;
+            $order['provider_id'] = $provider_auto;
+            $order['auto_registration_id'] = $providers_autos['auto_registration_id'][$key];
+            $order_create = new Order($order);
+            $final_order = Auth::user()->orders()->save($order_create);
+        }
+
+        Session::flush();
+        return 'pavyko';
     }
 
 }

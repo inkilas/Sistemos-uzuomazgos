@@ -12,7 +12,10 @@ class Order extends Model {
         'deliver_address',
         'extra_address',
         'order_key',
-        'auto_registration_id'
+        'auto_registration_id',
+        'provider_id',
+        'category_id',
+        'client_id'
     ];
 
     protected $dates = ['order_date'];
