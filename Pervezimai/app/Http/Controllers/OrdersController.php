@@ -118,19 +118,24 @@ class OrdersController extends Controller {
     }
 
     /**
-     * Nukreipiama, kur galima peržiūrėti savo pateiktus užsakymus
+     * Nukreipiama, kur galima peržiūrėti kokius užsakymus pateikė
      *
      * @return \Illuminate\View\View
      */
     public function clientindex()
     {
         $orders = User::findOrFail(Auth::user()->id)->clientorders;
+        foreach($orders as $key => $order) {
+            $auto = Auto_registration::findOrFail($order->auto_registration_id);
+            $order['auto_registration'] = $auto;
+        }
+        $last_key = $key;
 
-        return view('orders.client', compact('orders'));
+        return view('orders.client', compact('orders', 'order', 'key', 'last_key'));
     }
 
     /**
-     * Nukreipiama, gur vežėjas gali peržiūrėti jam pateiktus užsakymus
+     * Nukreipiama, gur vežėjas gali peržiūrėti kokius užsakymus kiti yra klientui(vežėjui) pateikę
      *
      * @return \Illuminate\View\View
      */
@@ -150,9 +155,17 @@ class OrdersController extends Controller {
      *
      * @return \Illuminate\View\View
      */
-    public function showclient($order_key, $order_id)
+    public function showclient($order_key)
     {
-        return view('orders.showclient');
+        $orders = User::findOrFail(Auth::user()->id)->clientorders()->where('order_key', $order_key)->get();
+        foreach($orders as $key => $order) {
+            $auto = Auto_registration::findOrFail($order->auto_registration_id);
+            $provider = User::findOrFail($order->provider_id);
+            $order['provider'] = $provider;
+            $order['auto_registration'] = $auto;
+        }
+
+        return view('orders.showclient', compact('orders', 'order_key', 'order'));
     }
 
     /**

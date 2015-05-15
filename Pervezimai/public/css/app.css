@@ -6250,3 +6250,18 @@ label,
     background-color: #982820;
     border-color: #982820;
 }
+.bold-text{
+    font-weight: bold;
+}
+.table-hover-order tbody tr:hover{
+    background-color: #dfdfff;
+}
+.table-top-row-storng{
+    border-top: 3px solid #ddd;
+}
+.table-button-hover:hover {
+    background-color: #ffffff;
+}
+.table-strong-top{
+    border-top: 3px solid;
+}

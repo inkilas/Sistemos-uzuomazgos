@@ -22,7 +22,6 @@ class CreateOrdersTable extends Migration {
             $table->boolean('extra_services')->default(0);
             $table->string('pickup_address');
             $table->string('deliver_address');
-            $table->string('extra_address');
             $table->text('order_comment');
             $table->timestamps();
 

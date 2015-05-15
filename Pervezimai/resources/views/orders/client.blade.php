@@ -6,9 +6,11 @@
             <h1>Mano pateikti užsakymai</h1>
         </div>
 
-        @foreach($orders as $order)
-                <a href="{{ action('OrdersController@showclient', [$order->order_key]) }}">{{ $order->order_date }} | {{ $order->pickup_address }}</a> <br>
-        @endforeach
+        @for($key = 0; $key < $last_key; $key++)
+            @if($orders[$key]->order_key == $orders[$key++]->order_key)
+                <a href="{{ action('OrdersController@showclient', [$orders[$key]->order_key]) }}">{{ $orders[$key]->order_key }} |  {{ $orders[$key]->order_date }} | {{ $orders[$key]->pickup_address }}</a> <br>
+            @endif
+        @endfor
 
     </div>
 

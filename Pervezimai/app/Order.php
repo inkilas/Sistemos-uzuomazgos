@@ -10,7 +10,6 @@ class Order extends Model {
         'order_comment',
         'pickup_address',
         'deliver_address',
-        'extra_address',
         'order_key',
         'auto_registration_id',
         'provider_id',
@@ -18,7 +17,7 @@ class Order extends Model {
         'client_id'
     ];
 
-    protected $dates = ['order_date'];
+    //protected $dates = ['order_date'];
 
     /**
      * užsakymas priklauso vienam vartotojui ir turi vieną tiekėją.
