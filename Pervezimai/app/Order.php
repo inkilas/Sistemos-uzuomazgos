@@ -10,12 +10,14 @@ class Order extends Model {
         'order_comment',
         'pickup_address',
         'deliver_address',
-        'extra_address',
         'order_key',
-        'auto_registration_id'
+        'auto_registration_id',
+        'provider_id',
+        'category_id',
+        'client_id'
     ];
 
-    protected $dates = ['order_date'];
+    //protected $dates = ['order_date'];
 
     /**
      * užsakymas priklauso vienam vartotojui ir turi vieną tiekėją.
@@ -48,7 +50,7 @@ class Order extends Model {
      */
     public function provider_auto()
     {
-        return $this->hasMany('App\Auto_registration');
+        return $this->hasManyThrough('App\Auto_registration', 'App\User');
     }
 
 

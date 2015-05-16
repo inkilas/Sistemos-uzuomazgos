@@ -11,7 +11,7 @@
 |
 */
 Route::get('users', 'UsersController@index'); // kurtas mokymuisi
-/***********Routes duomenų bazės užpildymui******************/
+/**************Routes duomenų bazės užpildymui******************/
 Route::get('categories/create', 'CategoryController@create');
 Route::post('categories', 'CategoryController@store');
 
@@ -21,10 +21,17 @@ Route::post('categories/createauto', 'AutotypesController@store');
 
 Route::get('/', 'HomeController@index');
 
+/********************Orders routes*****************************/
 Route::get('orders/create', 'OrdersController@create');
 Route::post('orders', 'OrdersController@store');
 Route::post('orders/search','OrdersController@postsearch');
 Route::get('orders/search','OrdersController@getsearch');
+Route::get('orders', 'OrdersController@index');
+Route::get('orders/client', 'OrdersController@clientindex');
+Route::get('orders/provider', 'OrdersController@providerindex');
+Route::get('orders/client/{order_key}','OrdersController@showclient');
+Route::get('orders/provider/{order_key}/{order_id}','OrdersController@showprovider');
+/**************************************************************/
 
 Route::resource('auto_registrations', 'Auto_registrationsController');
 
