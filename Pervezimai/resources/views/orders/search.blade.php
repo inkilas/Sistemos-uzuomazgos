@@ -93,7 +93,6 @@
      var directionsService = new google.maps.DirectionsService();
      var location1;
      var location2;
-     var atstumas;
 
      google.maps.event.addDomListener(window, 'load', initialize);
 
@@ -112,18 +111,16 @@
      };
 
      function codeAddress1() {                               // geokoduojam pirma adresa
-                 var address = '{{ $ordersession['pickup_address']}}';
-                 geocoder.geocode( { 'address': address}, function(results, status) {
-                         if (status == google.maps.GeocoderStatus.OK) {
-                                 // map.setCenter(results[0].geometry.location);
-                                 markers[0][1] = results[0].geometry.location.lat();      // lat koordinates irasome i masyva
-                                 markers[0][2] = results[0].geometry.location.lng();
-          // lng koordinates irasome i masyva
-                             } else {
-                           alert('Geocode was not successful for the following reason: ' + status);
-                         }
-                 })
-                 return markers[0][1],markers[0][2];
+        var address = '{{ $ordersession['pickup_address']}}';
+        geocoder.geocode( { 'address': address}, function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                markers[0][1] = results[0].geometry.location.lat();      // lat koordinates irasome i masyva
+                markers[0][2] = results[0].geometry.location.lng();      // lng koordinates irasome i masyva
+            } else {
+                alert('Geocode was not successful for the following reason: ' + status);
+            }
+     })
+     return markers[0][1],markers[0][2];
 
      };
 
@@ -170,7 +167,6 @@
             map.fitBounds(bounds);
      };
 
-
         var delay = 1000;
         setTimeout(showRoute, delay);
 
@@ -215,10 +211,38 @@
             strokeOpacity: 0.6,
             strokeColor: "#FFAA00"
         });
-     };
+       };
+
+       var delay = 2500;
+       setTimeout(showproviders, delay);
+
+    function showproviders() {
+         var auto_city = [
+             @foreach($autos_by_categories as $auto_by_category)
+                @foreach($auto_by_category->user()->get() as $provider_by_category)
+                    ['{{ $provider_by_category->id}}', '{{ $provider_by_category->name}}', '{{ $auto_by_category->auto_city}}'],
+                @endforeach
+             @endforeach
+         ];
+        console.log(auto_city);
+        for (var x = 0; x < auto_city.length; x++) {
+          $.getJSON('http://maps.googleapis.com/maps/api/geocode/json?address='+auto_city[x][2]+'&sensor=false', null, function (data) {
+            var p = data.results[0].geometry.location;
+            var latlng = new google.maps.LatLng(p.lat, p.lng);
+            new google.maps.Marker({
+                position: latlng,
+                icon: '/images/truck3.png',
+                map: map
+            });
+
+          });
+        }
+
+    };
 
 
      window.onpageshow = function(){codeAddress1(); codeAddress2();};
+     // window.onload = function(){showproviders();};
      google.maps.event.addDomListener(window, 'load', initialize);
  </script>
 
