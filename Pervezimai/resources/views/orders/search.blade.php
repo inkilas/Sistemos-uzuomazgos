@@ -3,10 +3,18 @@
                 position: relative;
                 text-align: center;
                 margin-left: 15px;
-                height: 50%;
-                width: 48%;
+                margin-bottom: 15px;
+                height: 55%;
+                width: 97%;
                 /*padding: 0px*/
-              }
+              }      
+              #distance_road {
+                text-align: center;
+                font-size: 12pt;
+                color: blue;
+                font-style: italic;
+                margin-bottom: 15px;
+              } 
         </style>     
             <script src="http://maps.google.com/maps/api/js?sensor=true&libraries=geometry"></script>
 
@@ -19,16 +27,17 @@
         <h1>Vežėjų paieška</h1>
     </div>
     <div class="row">
-        <div id="map-canvas" class="col-sm-6">
-
-        </div>
-        <div class="col-sm-6">
+        <div id="map-canvas" class="col-sm-12"></div>
+        <div id="distance_road" class="col-sm-12"></div>
+    </div>
+    <div class="row">    
+        <div class="col-sm-12">
             {!! Form::open(['url' => 'orders']) !!}
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
-                        <th>Automobilis</th>
                         <th>Vežėjas</th>
+                        <th>Automobilis</th>
                         <th>Adresas</th>
                     </tr>
                 </thead>
@@ -74,143 +83,166 @@
      var geocoder;
      var map;
      markers = [                          // sukuriam masyvą markerio koordinatėms. Pavad.,lat, lng, icon.
-   ['Paėmimo adresas', , ,'/images/flagman.png'],
-   ['Pristatymo adresas', , ,'/images/truck3.png']
-    // ['Tarpinis adresas', , ,1]
+           ['Paėmimo adresas', , ,'/images/flagman.png'],
+           ['Pristatymo adresas', , ,'/images/smiley_happy.png']
+            // ['Tarpinis adresas', , ,1]
       ];
-
      var markerBounds = new google.maps.LatLngBounds();
      var latlng;
      var directionsDisplay;
      var directionsService = new google.maps.DirectionsService();
      var location1;
      var location2;
-     var atstumas;
 
      google.maps.event.addDomListener(window, 'load', initialize);
 
      function initialize() {
-                         directionsDisplay = new google.maps.DirectionsRenderer();
-                         geocoder = new google.maps.Geocoder();
-                             var latlng = new google.maps.LatLng(55.1400712,24.6413204);      // pirminis zemelapis
-                               var mapOptions = {
-                                      zoom: 7,
-                                      center: latlng,
-                                      disableDefaultUI: true,
-                                      mapTypeId:google.maps.MapTypeId.ROADMAP
-                                }
-                          map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+            directionsDisplay = new google.maps.DirectionsRenderer();
+            geocoder = new google.maps.Geocoder();
+            var latlng = new google.maps.LatLng(55.1400712,24.6413204);      // pirminis zemelapis
+            var mapOptions = {
+                zoom: 7,
+                center: latlng,
+                disableDefaultUI: true,
+                mapTypeId:google.maps.MapTypeId.ROADMAP
+            }
+            map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
      };
 
-
-
      function codeAddress1() {                               // geokoduojam pirma adresa
-                 var address = '{{ $ordersession['pickup_address']}}';
-                 geocoder.geocode( { 'address': address}, function(results, status) {
-                         if (status == google.maps.GeocoderStatus.OK) {
-                                 // map.setCenter(results[0].geometry.location);
-                                 markers[0][1] = results[0].geometry.location.lat();      // lat koordinates irasome i masyva
-                                 markers[0][2] = results[0].geometry.location.lng();
-          // lng koordinates irasome i masyva
-                             } else {
-                           alert('Geocode was not successful for the following reason: ' + status);
-                         }
-                 })
-                 return markers[0][1],markers[0][2];
+        var address = '{{ $ordersession['pickup_address']}}';
+        geocoder.geocode( { 'address': address}, function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                markers[0][1] = results[0].geometry.location.lat();      // lat koordinates irasome i masyva
+                markers[0][2] = results[0].geometry.location.lng();      // lng koordinates irasome i masyva
+            } else {
+                alert('Geocode was not successful for the following reason: ' + status);
+            }
+     })
+     return markers[0][1],markers[0][2];
 
      };
 
 
      function codeAddress2() {                                 // geokoduojam antra adresa
-       var address = '{{ $ordersession['deliver_address']}}';
-       geocoder.geocode( { 'address': address}, function(results, status) {
-               if (status == google.maps.GeocoderStatus.OK) {
-
-                       markers[1][1] = results[0].geometry.location.lat();   // lat koordinates irasome i masyva
-                       markers[1][2] = results[0].geometry.location.lng();   // lng koordinates irasome i masyva
-                     } else {
-                 alert('Geocode was not successful for the following reason: ' + status);
-               }
-             })
-       return markers[1][1],markers[1][2];
+        var address = '{{ $ordersession['deliver_address']}}';
+        geocoder.geocode( { 'address': address}, function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                markers[1][1] = results[0].geometry.location.lat();   // lat koordinates irasome i masyva
+                markers[1][2] = results[0].geometry.location.lng();   // lng koordinates irasome i masyva
+            } else {
+                alert('Geocode was not successful for the following reason: ' + status);
+            }
+            })
+        return markers[1][1],markers[1][2];
      };
 
-         var delay = 2000;
-         setTimeout(display, delay);
+        var delay = 1000;
+        setTimeout(display, delay);
 
      function display() {                      // sudedam markerius ir pateikiam vaizda, kad abu markeriai matytusi
-
          //create empty LatLngBounds object
-               var bounds = new google.maps.LatLngBounds();
-               var infowindow = new google.maps.InfoWindow();
-
-                 for (i = 0; i < markers.length; i++) {
-                     // console.log(markers[i][1],markers[i][2]);                // lipdom markerius pagal koordinates
-                             var marker = new google.maps.Marker({
-                               position: new google.maps.LatLng(markers[i][1],markers[i][2]),
-                               zoom: 4,
-                               map: map,
-                               icon: markers[i][3],
-                               title: markers[i][0]
-                                                     });
-                               //extend the bounds to include each marker's position
-                               bounds.extend(marker.position);
-
-                               google.maps.event.addListener(marker, 'ondoubleclick', (function(marker, i) {
-                                   return function() {
-                                       infowindow.setContent(markers[i][0]);
-                                       infowindow.open(map, marker);
-                                   }
-                               })(marker, i));
-                 }
-
-         //now fit the map to the newly inclusive bounds
-             map.fitBounds(bounds);
+        var bounds = new google.maps.LatLngBounds();
+        var infowindow = new google.maps.InfoWindow();
+            for (i = 0; i < markers.length; i++) {
+            // lipdom markerius pagal koordinates
+                var marker = new google.maps.Marker({
+                position: new google.maps.LatLng(markers[i][1],markers[i][2]),
+                zoom: 4,
+                map: map,
+                icon: markers[i][3],
+                title: markers[i][0]
+                });
+            //extend the bounds to include each marker's position
+                bounds.extend(marker.position);
+                google.maps.event.addListener(marker, 'onclick', (function(marker, i) {
+                    return function() {
+                        infowindow.setContent(markers[i][0]);
+                        infowindow.open(map, marker);
+                    }
+                })(marker, i));
+            }
+      //now fit the map to the newly inclusive bounds
+            map.fitBounds(bounds);
      };
+
+        var delay = 1000;
+        setTimeout(showRoute, delay);
 
      function showRoute(){
+        location1 = markers[0][1] + "," + markers[0][2];
+        location2 = markers[1][1] + "," + markers[1][2];
+        directionsDisplay = new google.maps.DirectionsRenderer(
+            {
+                suppressMarkers: true,
+                suppressInfoWindows: true
+            });
+        directionsDisplay.setMap(map);
+            var request = {
+                origin:location1,
+                destination:location2,
+                travelMode: google.maps.DirectionsTravelMode.DRIVING
+            };
+        directionsService.route(request, function(response, status)
+            {
+                if (status == google.maps.DirectionsStatus.OK)
+                    {
+                        var laikas = response.routes[0].legs[0].duration.text;
+                        var mapObj = {
+                           day:"d.",
+                           hours:"val.",
+                           mins:"min."
+                        };
+                        laikas = laikas.replace(/day|hours|mins/gi, function(matched){
+                          return mapObj[matched];
+                        });
+                        directionsDisplay.setDirections(response);
+                        distance = "Atstumas tarp paėmimo ir pristatymo taškų yra: "+response.routes[0].legs[0].distance.text;
+                        distance += ". Vidutinė kelionės trukmė: "+laikas;
+                        document.getElementById("distance_road").innerHTML = distance;
 
-                   location1 = markers[0][1] + "," + markers[0][2];
-                   location2 = markers[1][1] + "," + markers[1][2];
+                    }
+            });
+        var line = new google.maps.Polyline({
+            map: map,
+            path: [location1, location2],
+            strokeWeight: 7,
+            strokeOpacity: 0.6,
+            strokeColor: "#FFAA00"
+        });
+       };
 
-                     directionsDisplay = new google.maps.DirectionsRenderer(
-                     {
-                        suppressMarkers: true,
-                        suppressInfoWindows: true
-                     });
-                     directionsDisplay.setMap(map);
+       var delay = 2500;
+       setTimeout(showproviders, delay);
 
-                     var request = {
-                        origin:location1,
-                        destination:location2,
-                        travelMode: google.maps.DirectionsTravelMode.DRIVING
-                     };
+    function showproviders() {
+         var auto_city = [
+             @foreach($autos_by_categories as $auto_by_category)
+                @foreach($auto_by_category->user()->get() as $provider_by_category)
+                    ['{{ $provider_by_category->id}}', '{{ $provider_by_category->name}}', '{{ $auto_by_category->auto_city}}'],
+                @endforeach
+             @endforeach
+         ];
+        console.log(auto_city);
+        for (var x = 0; x < auto_city.length; x++) {
+          $.getJSON('http://maps.googleapis.com/maps/api/geocode/json?address='+auto_city[x][2]+'&sensor=false', null, function (data) {
+            var p = data.results[0].geometry.location;
+            var latlng = new google.maps.LatLng(p.lat, p.lng);
+            new google.maps.Marker({
+                position: latlng,
+                icon: '/images/truck3.png',
+                map: map
+            });
 
-                     directionsService.route(request, function(response, status)
-                     {
-                        if (status == google.maps.DirectionsStatus.OK)
-                        {
-                           directionsDisplay.setDirections(response);
-                           distance = "Atstumas tarp paėmimo ir pristatymo taškų yra: "+response.routes[0].legs[0].distance.text;
-                           distance += " Vidutinė kelionės trukmė yra: "+response.routes[0].legs[0].duration.text;
-                           document.getElementById("distance_road").innerHTML = distance;
+          });
+        }
 
-                        }
-
-                     });
-
-                       var line = new google.maps.Polyline({
-                          map: map,
-                          path: [location1, location2],
-                          strokeWeight: 7,
-                          strokeOpacity: 0.8,
-                          strokeColor: "#FFAA00"
-                       });
-     };
+    };
 
 
-     window.onload = function(){codeAddress1(); codeAddress2(); display(); showRoute();};
+     window.onpageshow = function(){codeAddress1(); codeAddress2();};
+     // window.onload = function(){showproviders();};
      google.maps.event.addDomListener(window, 'load', initialize);
  </script>
 
