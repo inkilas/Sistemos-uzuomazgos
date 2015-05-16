@@ -14,7 +14,8 @@ class Order extends Model {
         'auto_registration_id',
         'provider_id',
         'category_id',
-        'client_id'
+        'client_id',
+        'order_activation'
     ];
 
     //protected $dates = ['order_date'];

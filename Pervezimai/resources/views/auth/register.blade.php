@@ -71,30 +71,23 @@
 						</div>
 
 						<div class="form-group">
-							<label class="col-md-4 control-label">Įmonės kodas</label>
-							<div class="col-md-6">
-								<input type="text" class="form-control" name="company_code" value="{{ old('company_code') }}">
-							</div>
-						</div>
-
-						<div class="form-group">
-							<label class="col-md-4 control-label">PVM mokėtojo kodas</label>
-							<div class="col-md-6">
-								<input type="text" class="form-control" name="PVM" value="{{ old('PVM') }}">
-							</div>
-						</div>
-
-						<div class="form-group">
-							<label class="col-md-4 control-label">Miestas</label>
+							<label class="col-md-4 control-label">Miestas*</label>
 							<div class="col-md-6">
 								<input type="text" class="form-control" name="city" value="{{ old('city') }}">
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label class="col-md-4 control-label">Adresas</label>
+							<label class="col-md-4 control-label">Adresas*</label>
 							<div class="col-md-6">
 								<input type="text" class="form-control" name="address" value="{{ old('address') }}">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-md-4 control-label">Komentaras</label>
+							<div class="col-md-6">
+								<textarea class="form-control" name="comment" value="{{ old('comment') }}" cols="40" rows="5"></textarea>
 							</div>
 						</div>
 
