@@ -124,14 +124,18 @@ class OrdersController extends Controller {
      */
     public function clientindex()
     {
-        $orders = User::findOrFail(Auth::user()->id)->clientorders;
+        $orders = Order::where('client_id', Auth::user()->id)->get();
+        $orders_keys = array();
+        $temp = 0;
         foreach($orders as $key => $order) {
             $auto = Auto_registration::findOrFail($order->auto_registration_id);
             $order['auto_registration'] = $auto;
+            if ($order->order_key != $temp){
+                $orders_keys[] = $order;
+            }
+            $temp = $order->order_key;
         }
-        $last_key = $key;
-
-        return view('orders.client', compact('orders', 'order', 'key', 'last_key'));
+        return view('orders.client', compact('orders', 'orders_keys'));
     }
 
     /**
@@ -160,8 +164,6 @@ class OrdersController extends Controller {
         $orders = User::findOrFail(Auth::user()->id)->clientorders()->where('order_key', $order_key)->get();
         foreach($orders as $key => $order) {
             $auto = Auto_registration::findOrFail($order->auto_registration_id);
-            $provider = User::findOrFail($order->provider_id);
-            $order['provider'] = $provider;
             $order['auto_registration'] = $auto;
         }
 
@@ -175,8 +177,51 @@ class OrdersController extends Controller {
      */
     public function showprovider($order_key, $order_id)
     {
-        $order = User::findOrFail(Auth::user()->id)->providerorders()->where('order_key', $order_key)->where('id', $order_id)->get();
+        $orders = User::findOrFail(Auth::user()->id)->providerorders()->where('order_key', $order_key)->where('id', $order_id)->get();
+        foreach($orders as $key => $order) {
+            $auto = Auto_registration::findOrFail($order->auto_registration_id);
+            $order['auto_registration'] = $auto;
+        }
+        return view('orders.showprovider', compact('orders'));
+    }
 
-        return view('orders.showprovider', compact('order'));
+    /**
+     * Užsakymo patvirtinimas
+     *
+     * @param $order_key
+     * @param $order_id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function update($order_key, $order_id)
+    {
+        $order = Order::where('provider_id', Auth::user()->id)->where('order_key', $order_key)->findOrFail($order_id);
+        $order->update(['order_activation' => 1]);
+        Order::where('order_key', $order_key)->where('order_activation', '!=', '1' )->delete();
+        return redirect('orders/provider');
+    }
+
+    /**
+     * Ištrina užsakymą
+     *
+     * @param $order_key
+     * @param $order_id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function destroy_provider($order_key, $order_id)
+    {
+        Order::where('provider_id', Auth::user()->id)->where('order_key', $order_key)->findOrFail($order_id)->delete();
+        return redirect('orders/provider');
+    }
+
+    public function destroy_client($order_key, $order_id)
+    {
+        Order::where('client_id', Auth::user()->id)->where('order_key', $order_key)->findOrFail($order_id)->delete();
+        $exist = Order::where('client_id', Auth::user()->id)->where('order_key', $order_key)->first();
+        if($exist != null) {
+            return redirect('orders/client/' . $order_key);
+        }else {
+            return redirect('orders/client');
+        }
+
     }
 }

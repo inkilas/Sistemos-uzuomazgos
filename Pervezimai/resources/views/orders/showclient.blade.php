@@ -5,6 +5,15 @@
         <div class="well well-lg text-center">
             <h1>Užsakymas {{ $order_key }}</h1>
         </div>
+        @if($order->order_activation == 0)
+            <div class="alert alert-danger">
+                <strong>Šis užsakymas yra nepatvirtinas</strong>
+            </div>
+        @else
+            <div class="alert alert-info">
+                <strong>Šis užsakymas yra patvirtinas</strong>
+            </div>
+        @endif
             <table class="table table-bordered table-condensed">
                 <tbody>
                     <tr class="bold-text">
@@ -39,17 +48,19 @@
                             <td ><strong>Vardas ir pavardė: </strong></td>
                             <td>{{ $order->provider->name }} {{ $order->provider->surname }}</td>
                         </tr>
-                        <tr>
-                            <td ><strong>Įmonė: </strong></td>
-                            <td>{{ $order->provider->company }}</td>
-                        </tr>
+                        @if($order->provider->company !== '')
+                            <tr>
+                                <td ><strong>Įmonė: </strong></td>
+                                <td>{{ $order->provider->company }}</td>
+                            </tr>
+                        @endif
                         <tr>
                             <td><strong>Email: </strong></td>
                             <td>{{ $order->provider->email }}</td>
                         </tr>
                         <tr>
                             <td><strong>Įmonės adresas: </strong></td>
-                            <td>{{ $order->provider->address }}</td>
+                            <td>{{ $order->provider->address }}, {{ $order->provider->city }}</td>
                         </tr>
                         <tr>
                             <td><strong>Automobilio adresas: </strong></td>
@@ -64,14 +75,20 @@
                             <td>{{ $order->auto_registration->auto_comment }}</td>
                         </tr>
                         @if($order->provider->comment !== '')
-                        <tr>
-                            <td><strong>Apie įmonę: </strong></td>
-                            <td>{{ $order->provider->comment }}</td>
-                        </tr>
+                            <tr>
+                                <td><strong>Apie įmonę: </strong></td>
+                                <td>{{ $order->provider->comment }}</td>
+                            </tr>
                         @endif
-                        <tr>
-                            <td colspan="2" ><a class="btn btn-primary-red form-control " href=""><span class="glyphicon glyphicon-remove"></span> Ištrinti </a></td>
-                        </tr>
+                        @if($order->order_activation == 0)
+                            <tr>
+                                <td colspan="2" >
+                                    {!! Form::open(['method' => 'DELETE', 'url' => 'orders/client/' . $order->order_key . '/' . $order->id ]) !!}
+                                        {!! Form::submit('Atšaukti užsakymą', ['class' => 'btn btn-primary-red form-control']) !!}
+                                    {!! Form::close() !!}
+                                </td>
+                            </tr>
+                        @endif
                     </tbody>
                 </table>
             @endforeach

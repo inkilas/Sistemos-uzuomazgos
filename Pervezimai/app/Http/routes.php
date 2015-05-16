@@ -30,7 +30,10 @@ Route::get('orders', 'OrdersController@index');
 Route::get('orders/client', 'OrdersController@clientindex');
 Route::get('orders/provider', 'OrdersController@providerindex');
 Route::get('orders/client/{order_key}','OrdersController@showclient');
-Route::get('orders/provider/{order_key}/{order_id}','OrdersController@showprovider');
+Route::get('orders/provider/{order_key}/{order_id}', 'OrdersController@showprovider');
+Route::patch('orders/provider/{order_key}/{order_id}', 'OrdersController@update');
+Route::delete('orders/provider/{order_key}/{order_id}', 'OrdersController@destroy_provider');
+Route::delete('orders/client/{order_key}/{order_id}', 'OrdersController@destroy_client');
 /**************************************************************/
 
 Route::resource('auto_registrations', 'Auto_registrationsController');
