@@ -66,7 +66,6 @@
 @endsection
 @section('footer')
 <script type="text/javascript">
-
     $('table td').on('click', function() {
         if($(this).parent().hasClass('success')){
             $(this).parent().removeClass('success');
@@ -121,9 +120,7 @@
             }
      })
      return markers[0][1],markers[0][2];
-
      };
-
 
      function codeAddress2() {                                 // geokoduojam antra adresa
         var address = '{{ $ordersession['deliver_address']}}';
@@ -201,7 +198,6 @@
                         distance = "Atstumas tarp paėmimo ir pristatymo taškų yra: "+response.routes[0].legs[0].distance.text;
                         distance += ". Vidutinė kelionės trukmė: "+laikas;
                         document.getElementById("distance_road").innerHTML = distance;
-
                     }
             });
         var line = new google.maps.Polyline({
@@ -223,7 +219,7 @@
                 @endforeach
              @endforeach
 
-
+            
 
     function showproviders() {
             
@@ -246,6 +242,16 @@
                  var infowindow = new google.maps.InfoWindow({
                       content: contentString
                   });
+                 
+              google.maps.event.addListener(marker1, 'click', toggleBounce);
+              function toggleBounce() {
+
+                  if (marker1.getAnimation() != null) {
+                    marker1.setAnimation(null);
+                  } else {
+                    marker1.setAnimation(google.maps.Animation.BOUNCE);
+                  }
+              }
 
               google.maps.event.addListener(marker1, 'click', function() {
                    infowindow.open(map,marker1);
