@@ -43,7 +43,7 @@
                 </thead>
                 <tbody>
                 @foreach($autos_by_categories as $auto_by_category)
-                    <tr>
+                    <tr id={{$auto_by_category->id}}>
                         @foreach($auto_by_category->user()->get() as $provider_by_category)
                             {!! Form::hidden('', $auto_by_category->id, ['id' => 'auto_registration_id']) !!}
                             {!! Form::hidden('', $provider_by_category->id, ['id' => 'provider_id']) !!}
@@ -66,7 +66,6 @@
 @endsection
 @section('footer')
 <script type="text/javascript">
-
     $('table td').on('click', function() {
         if($(this).parent().hasClass('success')){
             $(this).parent().removeClass('success');
@@ -121,9 +120,7 @@
             }
      })
      return markers[0][1],markers[0][2];
-
      };
-
 
      function codeAddress2() {                                 // geokoduojam antra adresa
         var address = '{{ $ordersession['deliver_address']}}';
@@ -201,7 +198,6 @@
                         distance = "Atstumas tarp paėmimo ir pristatymo taškų yra: "+response.routes[0].legs[0].distance.text;
                         distance += ". Vidutinė kelionės trukmė: "+laikas;
                         document.getElementById("distance_road").innerHTML = distance;
-
                     }
             });
         var line = new google.maps.Polyline({
@@ -216,28 +212,64 @@
        var delay = 2500;
        setTimeout(showproviders, delay);
 
-    function showproviders() {
-         var auto_city = [
+       var auto_city = new Array();
              @foreach($autos_by_categories as $auto_by_category)
                 @foreach($auto_by_category->user()->get() as $provider_by_category)
-                    ['{{ $provider_by_category->id}}', '{{ $provider_by_category->name}}', '{{ $auto_by_category->auto_city}}'],
+                    auto_city.push(['{{ $provider_by_category->id}}', '{{ $auto_by_category->id}}', '{{ $provider_by_category->name}}', '{{ $auto_by_category->auto_city}}']);
                 @endforeach
              @endforeach
-         ];
-        console.log(auto_city);
-        for (var x = 0; x < auto_city.length; x++) {
-          $.getJSON('http://maps.googleapis.com/maps/api/geocode/json?address='+auto_city[x][2]+'&sensor=false', null, function (data) {
-            var p = data.results[0].geometry.location;
-            var latlng = new google.maps.LatLng(p.lat, p.lng);
-            new google.maps.Marker({
-                position: latlng,
-                icon: '/images/truck3.png',
-                map: map
+
+            
+
+    function showproviders() {
+            
+        $.each(auto_city, function(index, doc){
+
+              $.getJSON('http://maps.googleapis.com/maps/api/geocode/json?address='+doc[3]+'&sensor=false', null, function (data) {
+                var p = data.results[0].geometry.location;
+                var latlng = new google.maps.LatLng(p.lat, p.lng);
+                var marker1 = new google.maps.Marker({
+                    position: latlng,
+                    icon: '/images/truck3.png',
+                    map: map,
+                    title: doc[1]
+                });
+                var contentString = '<div id="content">'+
+                '<div id="bodyContent">'+
+                '<p><b>Vežėjas:</b> '+doc[2]+'<br><b>Adresas: </b>'+doc[3]+'</b></p>'+
+                '</div>'+
+                '</div>';
+                 var infowindow = new google.maps.InfoWindow({
+                      content: contentString
+                  });
+                 
+              google.maps.event.addListener(marker1, 'click', toggleBounce);
+              function toggleBounce() {
+
+                  if (marker1.getAnimation() != null) {
+                    marker1.setAnimation(null);
+                  } else {
+                    marker1.setAnimation(google.maps.Animation.BOUNCE);
+                  }
+              }
+
+              google.maps.event.addListener(marker1, 'click', function() {
+                   infowindow.open(map,marker1);
+                   if($("#"+marker1.title).hasClass('success')){
+                        $("#"+marker1.title).removeClass('success');
+                        $("#"+marker1.title).find('input').removeAttr('name');
+                   }else{
+                        $("#"+marker1.title).addClass('success');
+                        $("#"+marker1.title).find('#auto_registration_id').attr('name', 'auto_registration_id[]');
+                        $("#"+marker1.title).find('#provider_id').attr('name', 'provider_id[]');
+                   }
+
+                   });
+                          
             });
-
-          });
-        }
-
+        });
+       
+        
     };
 
 
