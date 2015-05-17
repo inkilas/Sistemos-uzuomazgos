@@ -23,6 +23,11 @@
 @section('content')
 
 <div class="container">
+    @if(empty($autos_by_categories))
+    <div class="well well-lg text-center">
+        <h1>Atsiprašome vežėjų nerasta</h1>
+    </div>
+    @else
     <div class="well well-lg text-center">
         <h1>Vežėjų paieška</h1>
     </div>
@@ -61,6 +66,7 @@
         {!! Form::submit('Pateikti užsakymą', ['class' => 'btn btn-primary form-control']) !!}
     </div>
     {!! Form::close() !!}
+    @endif
 </div>
 
 @endsection
