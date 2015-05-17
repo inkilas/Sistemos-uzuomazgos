@@ -98,6 +98,8 @@
      var directionsService = new google.maps.DirectionsService();
      var location1;
      var location2;
+     var route_distance;
+     var route_duration;
 
      google.maps.event.addDomListener(window, 'load', initialize);
 
@@ -194,13 +196,16 @@
                         var laikas = response.routes[0].legs[0].duration.text;
                         var mapObj = {
                            day:"d.",
+                           hour:"val.",
                            hours:"val.",
                            mins:"min."
                         };
-                        laikas = laikas.replace(/day|hours|mins/gi, function(matched){
+                        laikas = laikas.replace(/day|hours|hour|mins/gi, function(matched){
                           return mapObj[matched];
                         });
                         directionsDisplay.setDirections(response);
+                        route_distance = response.routes[0].legs[0].distance.value;
+                        route_duration = response.routes[0].legs[0].duration.value;
                         distance = "Atstumas tarp paėmimo ir pristatymo taškų yra: "+response.routes[0].legs[0].distance.text;
                         distance += ". Vidutinė kelionės trukmė: "+laikas;
                         document.getElementById("distance_road").innerHTML = distance;
@@ -221,14 +226,15 @@
        var auto_city = new Array();
              @foreach($autos_by_categories as $auto_by_category)
                 @foreach($auto_by_category->user()->get() as $provider_by_category)
-                    auto_city.push(['{{ $provider_by_category->id}}', '{{ $auto_by_category->id}}', '{{ $provider_by_category->name}}', '{{ $auto_by_category->auto_city}}']);
+                    auto_city.push(['{{ $provider_by_category->id}}', '{{ $auto_by_category->id}}', '{{ $provider_by_category->name}}', '{{ $auto_by_category->auto_city}}', '{{ $auto_by_category->price_km}}', '{{ $auto_by_category->price_h}}', '{{ $auto_by_category->auto_comment = trim(preg_replace('/\s\s+/', ' ', $auto_by_category->auto_comment)) }}' ]);
                 @endforeach
              @endforeach
 
             
+             
 
     function showproviders() {
-            
+           
         $.each(auto_city, function(index, doc){
 
               $.getJSON('http://maps.googleapis.com/maps/api/geocode/json?address='+doc[3]+'&sensor=false', null, function (data) {
@@ -240,9 +246,17 @@
                     map: map,
                     title: doc[1]
                 });
+                var provider_duration_price = (route_duration / 3600) * doc[5];
+                var provider_route_price = (route_distance / 1000) * doc[4];
+                var rounded_price_km = Math.round( provider_route_price * 10 ) / 10;
+                var rounded_price_h = Math.round( provider_duration_price * 10 ) / 10;
+
                 var contentString = '<div id="content">'+
                 '<div id="bodyContent">'+
-                '<p><b>Vežėjas:</b> '+doc[2]+'<br><b>Adresas: </b>'+doc[3]+'</b></p>'+
+                '<p align="justify"><b>Vežėjas:</b> '+doc[2]+'<br><b>Adresas: </b>'+doc[3]+'</b><br>'+
+                'Preliminari kelionės kaina pagal vežėjo įkainius už kilometrą yra:   <b><font color="red">'+rounded_price_km+' €;</font></b><br>'+
+                ' Pagal valandinius įkainius preliminari kaina yra:  <b><font color="red">'+rounded_price_h+' €;</font></b><br>'+
+                '<b>Vežėjo automobilio komentaras:</b> '+doc[6]+'</p>'+
                 '</div>'+
                 '</div>';
                  var infowindow = new google.maps.InfoWindow({
