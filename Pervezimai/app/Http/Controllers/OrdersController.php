@@ -70,7 +70,7 @@ class OrdersController extends Controller {
         if(!isset($ordersession['extra_services'])){
             $ordersession['extra_services'] = 0;
         }
-        $autos_by_categories = Category::find($ordersession['category_id'])->auto_registration()->get();
+        $autos_by_categories = Category::find($ordersession['category_id'])->auto_registration()->where('user_id', '!=', Auth::user()->id)->get();
         return view('orders.search', compact('autos_by_categories', 'ordersession'));
 
     }
