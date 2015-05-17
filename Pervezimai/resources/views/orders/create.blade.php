@@ -9,11 +9,24 @@
                 {!! Form::label('category_id', 'Pasirinkite pervežimo kategoriją: ') !!}
                 {!! Form::select('category_id', $categories, 1, ['required', 'class' => 'btn btn-category dropdown-toggle']) !!}
                 <br/>
-                {!! Form::label('pickup_address', 'Paėmimo adresas: ') !!}
-                {!! Form::text('pickup_address', null, ['class' => 'form-control', 'placeholder' => 'Gatvė, namo numeris, Miestas']) !!}
-
-                {!! Form::label('deliver_address', 'Pristatymo adresas: ') !!}
-                {!! Form::text('deliver_address', null, ['class' => 'form-control', 'placeholder' => 'Gatvė, namo numeris, Miestas']) !!}
+                {!! Form::label('pickup_address', 'Paėmimo šalis ir adresas: ') !!}
+                <div class="row">
+                    <div class="col-sm-2">
+                    {!! Form::select('pickup_country', $countries, 16, ['id' => 'country_list', 'class' => 'form-control'] ) !!}
+                    </div>
+                    <div class="col-sm-10">
+                        {!! Form::text('pickup_address', null, ['class' => 'form-control', 'placeholder' => 'Gatvė, namo numeris, Miestas']) !!}
+                    </div>
+                </div>
+                {!! Form::label('deliver_address', 'Pristatymo šalis ir adresas: ') !!}
+                <div class="row">
+                    <div class="col-sm-2">
+                    {!! Form::select('deliver_country', $countries, 16, ['id' => 'country_list', 'class' => 'form-control'] ) !!}
+                    </div>
+                    <div class="col-sm-10">
+                        {!! Form::text('deliver_address', null, ['class' => 'form-control', 'placeholder' => 'Gatvė, namo numeris, Miestas']) !!}
+                    </div>
+                </div>
 
                 {!! Form::label('order_date', 'Paėmimo data: ') !!}
                 {!! Form::input('date', 'order_date', date('Y-m-d'), ['class' => 'form-control']) !!}
@@ -33,4 +46,12 @@
             </div>
         {!! Form::close() !!}
     </div>
+@endsection
+
+@section('footer')
+
+    <script>
+        $('#country_list').select2();
+    </script>
+
 @endsection

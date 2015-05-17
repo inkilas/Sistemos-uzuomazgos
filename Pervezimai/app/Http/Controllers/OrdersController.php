@@ -39,8 +39,9 @@ class OrdersController extends Controller {
     public function create()
     {
         $categories = Category::lists('category', 'id');
+        $countries = Country::lists('country', 'id');
         $number = str_pad(rand(0, 9999), 4, '0', STR_PAD_LEFT);
-        return view('orders.create', compact('categories', 'number'));
+        return view('orders.create', compact('categories', 'number', 'countries'));
     }
 
     /**
@@ -53,7 +54,6 @@ class OrdersController extends Controller {
     {
         $order = $request->all();
         Session::put('order', $order);
-
 
         return redirect('orders/search');
 
@@ -70,7 +70,22 @@ class OrdersController extends Controller {
         if(!isset($ordersession['extra_services'])){
             $ordersession['extra_services'] = 0;
         }
-        $autos_by_categories = Category::find($ordersession['category_id'])->auto_registration()->get();
+        $autos_by_categories_filter = Category::find($ordersession['category_id'])->auto_registration()->where('user_id', '!=', Auth::user()->id)->get();
+        $autos_by_categories = array();
+        foreach($autos_by_categories_filter as $key => &$autos_by_category){
+            $auto_countries = $autos_by_category->countries()->where('id', $ordersession['deliver_country'])->get();
+            foreach($auto_countries as $auto_country){
+                $autos_by_category['country'] = $auto_country->country;
+            }
+            if($autos_by_category->country == ''){
+                unset($autos_by_category);
+            }else {
+                $autos_by_categories[] = $autos_by_category;
+            }
+        }
+
+        //->countires()->where('id', $ordersession['deliver_country'])->get()
+     //   dd($autos_by_category);
         return view('orders.search', compact('autos_by_categories', 'ordersession'));
 
     }
