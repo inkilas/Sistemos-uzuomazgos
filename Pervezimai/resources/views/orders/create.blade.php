@@ -2,8 +2,9 @@
 
 @section('content')
     <div class="container">
-        <h1>Pateikite užsakymo duomenis</h1>
-        <hr/>
+        <div class="well text-center">
+            <h1>Pateikite užsakymo duomenis</h1>
+        </div>
         {!! Form::open(['url' => 'orders/search']) !!}
             <div class="form-group">
                 {!! Form::label('category_id', 'Pasirinkite pervežimo kategoriją: ') !!}

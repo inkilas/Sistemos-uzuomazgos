@@ -16,6 +16,7 @@ use App\Http\Requests\CreateOrderRequest;
 //use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Request;
 
@@ -84,8 +85,6 @@ class OrdersController extends Controller {
             }
         }
 
-        //->countires()->where('id', $ordersession['deliver_country'])->get()
-     //   dd($autos_by_category);
         return view('orders.search', compact('autos_by_categories', 'ordersession'));
 
     }
@@ -117,6 +116,18 @@ class OrdersController extends Controller {
             $update->update(['order_key' => $updateID.$ordersession['order_key']]);
         }
 
+        $updated = $updateID.$ordersession['order_key'];
+        $mailers_orders = Order::where('order_key', $updated)->get();
+        foreach($mailers_orders as $key => $mailer_order){
+            foreach($mailer_order->provider()->get() as $key => $mailer) {
+                $mailer_order['provider'] = $mailer;
+            }
+           // $mailer_array = $mailer_order->toArray();
+            $mailer_auto = $mailer_order->provider->user_auto()->where('id', $mailer_order->auto_registration_id)->get();
+            Mail::send('emails.provider_email', array('order_key' => $mailer_order->order_key, 'id' => $mailer_order->id), function($message) use ($mailer_order, $mailer_auto) {
+                $message->to( $mailer_order->provider->email, $mailer_order->provider->name. ' ' . $mailer_order->provider->surname)->subject('Užsakymas '. $mailer_order->order_key .' Jūsų automobiliui ' . $mailer_auto[0]->auto_name);
+            });
+        }
         Session::forget('order');
         return redirect('orders');
     }
