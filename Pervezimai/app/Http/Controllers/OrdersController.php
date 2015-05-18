@@ -123,7 +123,7 @@ class OrdersController extends Controller {
                 $mailer_order['provider'] = $mailer;
             }
             $mailer_auto = $mailer_order->provider->user_auto()->where('id', $mailer_order->auto_registration_id)->get();
-            Mail::send('emails.provider_email', array('order_key' => $mailer_order->order_key, 'id' => $mailer_order->id), function($message) use ($mailer_order, $mailer_auto) {
+            Mail::queue('emails.provider_email', array('order_key' => $mailer_order->order_key, 'id' => $mailer_order->id), function($message) use ($mailer_order, $mailer_auto) {
                 $message->to( $mailer_order->provider->email, $mailer_order->provider->name. ' ' . $mailer_order->provider->surname)->subject('Užsakymas '. $mailer_order->order_key .' Jūsų automobiliui ' . $mailer_auto[0]->auto_name);
             });
         }
