@@ -89,10 +89,16 @@ class Auto_registrationsController extends Controller {
         $countries = Country::lists('country', 'id');
         $auto_types = Auto_type::lists('auto_type', 'id');
         $selected_auto = Auto_registration::find($id)->auto_id;
-
         return view('auto_registrations.edit', compact('auto', 'categories', 'countries', 'auto_types', 'id', 'selected_auto'));
     }
 
+    /**
+     * Atnaujina redaguotą informaciją
+     *
+     * @param $id
+     * @param Auto_registrationRequest $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function update($id, Auto_registrationRequest $request)
     {
         $auto = Auto_registration::where('user_id', Auth::user()->id)->findOrFail($id);
@@ -104,6 +110,12 @@ class Auto_registrationsController extends Controller {
 
         $auto->categories()->sync($categoriesIds); //issaugo many to many lentele
         $auto->countries()->sync($countriesIds);
+
+        return redirect('auto_registrations/' . $id);
+    }
+
+    public function destroy($id){
+        Auto_registration::where('user_id', Auth::user()->id)->findOrFail($id)->delete();
 
         return redirect('auto_registrations');
     }

@@ -1,6 +1,7 @@
 <?php namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CreateOrderRequest extends Request {
 
@@ -11,7 +12,11 @@ class CreateOrderRequest extends Request {
 	 */
 	public function authorize()
 	{
-		return true;    //pakeist i false po logino sukurimo
+        if (! Auth::check()){
+            return false;
+        }
+
+        return true;
 	}
 
 	/**

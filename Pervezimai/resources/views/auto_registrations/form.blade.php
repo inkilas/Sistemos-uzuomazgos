@@ -35,7 +35,16 @@
     {!! Form::input('number', 'price_h', null, ['class' => 'form-control', 'step' => '0.01']) !!}
     <br>
     {!! Form::label('extra_services', 'Papildomos paslaugos ') !!}
-    {!! Form::input('checkbox', 'extra_services', '1') !!}
+    {!! Form::hidden('extra_services', '0') !!}
+    @if(isset($id))
+        @if($auto->extra_services == 0)
+            {!! Form::checkbox('extra_services', '1') !!}
+        @else
+            {!! Form::checkbox('extra_services', '1', ['checked']) !!}
+        @endif
+    @else
+        {!! Form::checkbox('extra_services', '1') !!}
+    @endif
     <br/>
     {!! Form::label('auto_comment', 'Komentaras: ') !!}
     {!! Form::textarea('auto_comment', null, ['class' => 'form-control', 'placeholder' => 'Įveskite papildomą informaciją apie Jūsų transporto priemonę.']) !!}
@@ -53,5 +62,4 @@
         });
         $('#country_list').select2();
     </script>
-
 @endsection

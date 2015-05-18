@@ -1,6 +1,7 @@
 <?php namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
+use Illuminate\Support\Facades\Auth;
 
 class Auto_registrationRequest extends Request {
 
@@ -13,8 +14,13 @@ class Auto_registrationRequest extends Request {
 	 */
 	public function authorize()
 	{
-		return true;
+        if (! Auth::check()){
+		    return false;
+        }
+
+        return true;
 	}
+
 
 	/**
 	 * Get the validation rules that apply to the request.
@@ -29,7 +35,7 @@ class Auto_registrationRequest extends Request {
             'category_list' => 'required',
             'auto_id' => 'required',
             'auto_city' => 'required',
-            'auto_comment' => 'required',
+            'auto_comment' => 'required|max:500',
 		];
 	}
 

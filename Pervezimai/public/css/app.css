@@ -6250,6 +6250,16 @@ label,
     background-color: #982820;
     border-color: #982820;
 }
+.btn-primary-green {
+    color: #ffffff;
+    background-color: #489734;
+    border-color: #489734;
+}
+.btn-primary-green:hover {
+    color: #ffffff;
+    background-color: #38732a;
+    border-color: #38732a;
+}
 .bold-text{
     font-weight: bold;
 }
