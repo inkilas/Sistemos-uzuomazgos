@@ -1,0 +1,9 @@
+diff a/Pervezimai/europa_countries.txt b/Pervezimai/europa_countries.txt	(rejected hunks)
+@@ -0,6 +0,7 @@
+ ļ»æ	countryID	country
+ 	AT	Austrija
+ 	BY	Baltarusija
++	BG	Bulgarija
+ 	DK	Danija
+ 	IE	Airija
+ 	EE	Estija
