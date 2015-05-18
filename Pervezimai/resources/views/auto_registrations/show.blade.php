@@ -43,7 +43,7 @@
                     <td><span style="color: green">{{ $auto->price_km }}eur/km</span>  <span style="color: blue">{{ $auto->price_h }}eur/val</span></td>
                 </tr>
                 <tr>
-                    <td><strong>Automobilio aprašymas: </strong></td>
+                    <td><strong>Papildomos paslaugos: </strong></td>
                     <td>
                         @if($auto->extra_services == false)
                             Neteikiamos
