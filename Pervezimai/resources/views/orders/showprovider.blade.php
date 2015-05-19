@@ -194,7 +194,7 @@
         return markers[1][1],markers[1][2];
      };
 
-        var delay = 1000;
+        var delay = 2000;
         setTimeout(display, delay);
 
      function display() {                      // sudedam markerius ir pateikiam vaizda, kad abu markeriai matytusi
@@ -223,7 +223,7 @@
             map.fitBounds(bounds);
      };
 
-        var delay = 1000;
+        var delay = 2000;
         setTimeout(showRoute, delay);
 
      function showRoute(){
