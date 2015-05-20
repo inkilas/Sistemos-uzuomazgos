@@ -128,6 +128,7 @@ class OrdersController extends Controller {
             });
         }
         Session::forget('order');
+        session()->flash('send_order', 'Užsakymas '.  $updated .' buvo sėkmingai pateiktas!');
         return redirect('orders');
     }
 
@@ -222,6 +223,7 @@ class OrdersController extends Controller {
         $order = Order::where('provider_id', Auth::user()->id)->where('order_key', $order_key)->findOrFail($order_id);
         $order->update(['order_activation' => 1]);
         Order::where('order_key', $order_key)->where('order_activation', '!=', '1' )->delete();
+        session()->flash('confirm_order', 'Užsakymas '.  $order_key .' buvo sėkmingai patvirtintas!');
         return redirect('orders/provider');
     }
 
@@ -235,16 +237,22 @@ class OrdersController extends Controller {
     public function destroy_provider($order_key, $order_id)
     {
         Order::where('provider_id', Auth::user()->id)->where('order_key', $order_key)->findOrFail($order_id)->delete();
+        session()->flash('delete_order', 'Užsakymas '.  $order_key .' buvo sėkmingai atšauktas!');
         return redirect('orders/provider');
     }
 
     public function destroy_client($order_key, $order_id)
     {
-        Order::where('client_id', Auth::user()->id)->where('order_key', $order_key)->findOrFail($order_id)->delete();
+        $order = Order::where('client_id', Auth::user()->id)->where('order_key', $order_key)->findOrFail($order_id);
+        $auto = Auto_registration::where('id', $order->auto_registration_id)->get();
+        session()->flash('delete_order', 'Užsakymas, kurio automobilis yra '.  $auto[0]->auto_name .' buvo sėkmingai atšauktas!');
+
+        $order->delete();
         $exist = Order::where('client_id', Auth::user()->id)->where('order_key', $order_key)->first();
         if($exist != null) {
             return redirect('orders/client/' . $order_key);
         }else {
+            session()->flash('delete_all_order', 'Visi užsakymai '.  $order_key .' buvo sėkmingai atšaukti!');
             return redirect('orders/client');
         }
 

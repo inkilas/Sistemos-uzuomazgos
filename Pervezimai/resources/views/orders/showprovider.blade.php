@@ -121,13 +121,13 @@
         @if($order->order_activation == 0)
             {!! Form::open(['method' => 'PATCH', 'url' => 'orders/provider/' . $order->order_key . '/' . $order->id ]) !!}
                 <div class="col-sm-6">
-                    {!! Form::submit('Priimti užsakymą', ['class' => 'btn btn-primary form-control']) !!}
+                    {!! Form::submit('Priimti užsakymą', ['id' => 'confirm', 'class' => 'btn btn-primary form-control']) !!}
                 </div>
             {!! Form::close() !!}
 
             {!! Form::open(['method' => 'DELETE', 'url' => 'orders/provider/' . $order->order_key . '/' . $order->id ]) !!}
                 <div class="col-sm-6">
-                    {!! Form::submit('Atšaukti užsakymą', ['class' => 'btn btn-primary-red form-control']) !!}
+                    {!! Form::submit('Atšaukti užsakymą', ['id' => 'delete', 'class' => 'btn btn-primary-red form-control']) !!}
                 </div>
             {!! Form::close() !!}
         @endif
@@ -136,6 +136,26 @@
 
 @endsection
 @section('footer')
+<script>
+
+    $(document).ready(function(){
+      $("#delete").click(function(){
+        if (!confirm("Ar tikrai norite atšaukti šį užsakymą?")){
+          return false;
+        }
+      });
+    });
+
+    $(document).ready(function(){
+      $("#confirm").click(function(){
+        if (!confirm("Ar tikrai norite priimti šį užsakymą?")){
+          return false;
+        }
+      });
+    });
+
+</script>
+
 <script type="text/javascript">
 
      var geocoder;

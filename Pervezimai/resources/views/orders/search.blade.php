@@ -63,7 +63,7 @@
         </div>
     </div>
     <div class="form-group">
-        {!! Form::submit('Pateikti užsakymą', ['class' => 'btn btn-primary form-control']) !!}
+        {!! Form::submit('Pateikti užsakymą', ['id' => 'confirm', 'class' => 'btn btn-primary form-control']) !!}
     </div>
     {!! Form::close() !!}
     @endif
@@ -71,6 +71,19 @@
 
 @endsection
 @section('footer')
+
+<script>
+
+    $(document).ready(function(){
+      $("#confirm").click(function(){
+        if (!confirm("Ar tikrai norite atlikti užsakymą?")){
+          return false;
+        }
+      });
+    });
+
+</script>
+
 <script type="text/javascript">
 
      var geocoder;

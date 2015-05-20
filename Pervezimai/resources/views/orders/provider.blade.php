@@ -5,6 +5,19 @@
         <div class="well well-lg text-center">
             <h1>Man pateikti užsakymai</h1>
         </div>
+
+        @if (Session::has('delete_order'))
+            <div class="alert alert-warning">
+                {{ session('delete_order') }}
+            </div>
+        @endif
+        @if (Session::has('confirm_order'))
+            <div class="alert alert-info">
+                {{ session('confirm_order') }}
+            </div>
+        @endif
+
+
         @if(!empty($orders->toArray()))
             <table class="table table-hover">
                 <thead>
@@ -52,6 +65,9 @@
 @endsection
 @section('footer')
     <script type="text/javascript">
+
+       $('div.alert').delay(8000).slideUp(300);
+
        jQuery(document).ready(function($) {
            $(".clickable-row").click(function() {
                window.document.location = $(this).data("href");

@@ -72,6 +72,8 @@ class Auto_registrationsController extends Controller {
         $auto->categories()->attach($categoriesIds); //issaugo many to many lentele
         $auto->countries()->attach($countriesIds);
 
+        session()->flash('created_message', 'Automobilis '. $auto_registration['auto_name'] .' sėkmingai užregistruotas');
+
         return redirect('auto_registrations');
     }
 
@@ -111,12 +113,17 @@ class Auto_registrationsController extends Controller {
         $auto->categories()->sync($categoriesIds); //issaugo many to many lentele
         $auto->countries()->sync($countriesIds);
 
+        session()->flash('updated_message', 'Informacija apie automobilį '. $auto->auto_name .' sėkmingai atnaujinta');
+
         return redirect('auto_registrations/' . $id);
     }
 
     public function destroy($id){
-        Auto_registration::where('user_id', Auth::user()->id)->findOrFail($id)->delete();
+        $auto_registration = Auto_registration::where('user_id', Auth::user()->id)->findOrFail($id);
 
+        session()->flash('delete_message', 'Automobilis '.  $auto_registration->auto_name .' pašalintas!');
+
+        $auto_registration->delete();
         return redirect('auto_registrations');
     }
 

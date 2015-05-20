@@ -25,6 +25,13 @@
         <div class="well well-lg text-center">
             <h1>Užsakymas {{ $order_key }}</h1>
         </div>
+
+        @if (Session::has('delete_order'))
+            <div class="alert alert-warning">
+                {{ session('delete_order') }}
+            </div>
+        @endif
+
         @if($order->order_activation == 0)
             <div class="alert alert-danger">
                 <strong>Šis užsakymas yra nepatvirtinas</strong>
@@ -108,7 +115,7 @@
                             <tr>
                                 <td colspan="2" >
                                     {!! Form::open(['method' => 'DELETE', 'url' => 'orders/client/' . $order->order_key . '/' . $order->id ]) !!}
-                                        {!! Form::submit('Atšaukti užsakymą', ['class' => 'btn btn-primary-red form-control']) !!}
+                                        {!! Form::submit('Atšaukti užsakymą', ['id' => 'delete', 'class' => 'btn btn-primary-red form-control']) !!}
                                     {!! Form::close() !!}
                                 </td>
                             </tr>
@@ -122,6 +129,20 @@
 
 @endsection
 @section('footer')
+<script>
+
+    $('div.alert').delay(8000).slideUp(300);
+
+    $(document).ready(function(){
+      $("#delete").click(function(){
+        if (!confirm("Ar tikrai norite atšaukti šį užsakymą?")){
+          return false;
+        }
+      });
+    });
+
+</script>
+
 <script type="text/javascript">
 
      var geocoder;
