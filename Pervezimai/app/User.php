@@ -62,13 +62,23 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     }
 
     /**
-     * Vartotojas gali būti įvertintas daugelio vartotojų
+     * Vežėjas gali būti įvertintas daugelio vartotojų
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function evaluation()
+    public function provider_evaluation()
     {
-        return $this->hasMany('App\Evaluation');
+        return $this->hasMany('App\Evaluation', 'provider_id');
+    }
+
+    /**
+     * Klientas, kuris gali įvertinti daug vežėjų
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function user_evaluation()
+    {
+        return $this->hasMany('App\Evaluation', 'client_id');
     }
 
 }
