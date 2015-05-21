@@ -136,36 +136,66 @@
                     </tbody>
                 </table>
                 @if($order->order_activation == 1)
+                    @if($order->provider->provider_evaluation()->where('client_id', Auth::user()->id)->first())
+                        <table class="table table-strong-top">
+                            <tr>
+                                <td colspan="2"><strong>Šį vežėją jau įvertinote</strong></td>
+                            </tr>
+                            <tr>
+                                <td width="15%">Įvertinimas</td>
+                                <td>
+                                    @for($i=1; $i <= 5; $i++)
+                                       <span class="glyphicon glyphicon-star{{ ($i <= $order->provider->provider_evaluation()->where('client_id', Auth::user()->id)->first()->evaluation) ? '' : '-empty'}}"></span>
+                                    @endfor
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Komentaras</td>
+                                <td>{{$order->provider->provider_evaluation()->where('client_id', Auth::user()->id)->first()->evaluation_comment}}</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                   {!! Form::open(['method' => 'DELETE', 'url' => 'evaluate/' . $order->provider->id . '/' . Auth::user()->id ]) !!}
+                                       {!! Form::submit('Ištrinti įvertinimą', ['id' => 'delete_evaluation', 'class' => 'btn btn-primary-red form-control']) !!}
+                                   {!! Form::close() !!}
+                                </td>
+                                <td>
+                                   <a href="{{ url('evaluate'). '/' . $order->provider->id }}" class="btn btn-link" target="_blank"> Peržiūrėkite visus įvertinimus</a>
+                                </td>
+                            </tr>
+                        </table>
 
-                	<div class="row" style="margin-top:40px;">
-                		<div class="col-md-6">
-                    	<div class="well well-sm">
-                            <div class="text-right">
-                                <a class="btn btn-success btn-green" href="#reviews-anchor" id="open-review-box">Įvertinkite vežėją</a>
-                            </div>
+                    @else
+                        <div class="row" style="margin-top:40px;">
+                            <div class="col-md-6">
+                            <div class="well well-sm">
+                                <div class="text-right">
+                                    <a class="btn btn-success btn-green" href="#reviews-anchor" id="open-review-box">Įvertinkite vežėją</a>
+                                </div>
 
-                            <div class="row" id="post-review-box" style="display:none;">
-                                <div class="col-md-12">
-                                    <form accept-charset="UTF-8" action="{{ url('evaluate') }}" method="post">
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <input type="hidden" name="client_id" value="{{ Auth::user()->id }}">
-                                        <input type="hidden" name="provider_id" value="{{ $order->provider_id }}">
-                                        <input id="ratings-hidden" name="evaluation" type="hidden">
-                                        <textarea class="form-control animated" cols="50" id="new-review" name="evaluation_comment" placeholder="Parašykite savo atsiliepimą..." rows="5"></textarea>
+                                <div class="row" id="post-review-box" style="display:none;">
+                                    <div class="col-md-12">
+                                        <form accept-charset="UTF-8" action="{{ url('evaluate') }}" method="post">
+                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                            <input type="hidden" name="client_id" value="{{ Auth::user()->id }}">
+                                            <input type="hidden" name="provider_id" value="{{ $order->provider_id }}">
+                                            <input id="ratings-hidden" name="evaluation" type="hidden">
+                                            <textarea class="form-control animated" cols="50" id="new-review" name="evaluation_comment" placeholder="Parašykite savo atsiliepimą..." rows="5"></textarea>
 
-                                        <div class="text-right">
-                                            <div class="stars starrr" data-rating="0"></div>
-                                            <a class="btn btn-danger btn-sm" href="#" id="close-review-box" style="display:none; margin-right: 10px;">
-                                            <span class="glyphicon glyphicon-remove"></span>Atšaukti</a>
-                                            <button class="btn btn-success btn-lg" type="submit">Išsaugoti</button>
-                                        </div>
-                                    </form>
+                                            <div class="text-right">
+                                                <div class="stars starrr" data-rating="0"></div>
+                                                <a class="btn btn-danger btn-sm" href="#" id="close-review-box" style="display:none; margin-right: 10px;">
+                                                <span class="glyphicon glyphicon-remove"></span>Atšaukti</a>
+                                                <button class="btn btn-success btn-lg" type="submit">Išsaugoti</button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                		</div>
-                	</div>
+                            </div>
+                        </div>
+                	@endif
                 @endif
             @endforeach
 
@@ -226,6 +256,14 @@ $(function(){
     $(document).ready(function(){
       $("#delete").click(function(){
         if (!confirm("Ar tikrai norite atšaukti šį užsakymą?")){
+          return false;
+        }
+      });
+    });
+
+    $(document).ready(function(){
+      $("#delete_evaluation").click(function(){
+        if (!confirm("Ar tikrai norite ištrinti šį įvertinimą?")){
           return false;
         }
       });

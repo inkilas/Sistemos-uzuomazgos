@@ -44,6 +44,7 @@
                         <th>Vežėjas</th>
                         <th>Automobilis</th>
                         <th>Adresas</th>
+                        <th>Įvertinimas</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -55,6 +56,12 @@
                             <td>{{ $provider_by_category->name }}</td>
                             <td>{{ $auto_by_category->auto_name }}</td>
                             <td>{{ $auto_by_category->auto_city }}</td>
+                            <td>
+                                @for($i=1; $i <= 5; $i++)
+                                   <span class="glyphicon glyphicon-star{{ ($i <= $provider_by_category->provider_evaluation()->avg('evaluation')) ? '' : '-empty'}}"></span>
+                                @endfor
+                                    <a href="{{ url('evaluate'). '/' . $provider_by_category->id }}" class="btn btn-link" target="_blank"> Peržiūrėkite visus įvertinimus</a>
+                            </td>
                         @endforeach
                     </tr>
                 @endforeach
