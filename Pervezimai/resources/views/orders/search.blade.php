@@ -63,7 +63,7 @@
         </div>
     </div>
     <div class="form-group">
-        {!! Form::submit('Pateikti užsakymą', ['class' => 'btn btn-primary form-control']) !!}
+        {!! Form::submit('Pateikti užsakymą', ['id' => 'confirm', 'class' => 'btn btn-primary form-control']) !!}
     </div>
     {!! Form::close() !!}
     @endif
@@ -71,6 +71,19 @@
 
 @endsection
 @section('footer')
+
+<script>
+
+    $(document).ready(function(){
+      $("#confirm").click(function(){
+        if (!confirm("Ar tikrai norite atlikti užsakymą?")){
+          return false;
+        }
+      });
+    });
+
+</script>
+
 <script type="text/javascript">
 
      var geocoder;
@@ -143,7 +156,7 @@
         return markers[1][1],markers[1][2];
      };
 
-        var delay = 1000;
+        var delay = 2000;
         setTimeout(display, delay);
 
      function display() {                      // sudedam markerius ir pateikiam vaizda, kad abu markeriai matytusi
@@ -172,7 +185,7 @@
             map.fitBounds(bounds);
      };
 
-        var delay = 1000;
+        var delay = 2000;
         setTimeout(showRoute, delay);
 
      function showRoute(){                                  // paemimo ir pristatymo vietos
@@ -239,6 +252,9 @@
                 }
             }    
         });
+
+        var delay = 2000;
+        setTimeout(showRoute, delay);
 
     function showproviders() {
            

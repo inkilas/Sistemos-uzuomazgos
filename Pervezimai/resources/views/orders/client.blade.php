@@ -6,9 +6,13 @@
             <h1>Mano pateikti užsakymai</h1>
         </div>
 
+        @if (Session::has('delete_all_order'))
+            <div class="alert alert-warning">
+                {{ session('delete_all_order') }}
+            </div>
+        @endif
 
-
-        @if(isset($orders))
+        @if(isset($orders[0]))
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -50,6 +54,11 @@
 
 @endsection
 @section('footer')
+
+    <script>
+        $('div.alert').delay(8000).slideUp(300);
+    </script>
+
     <script type="text/javascript">
        jQuery(document).ready(function($) {
            $(".clickable-row").click(function() {
@@ -58,3 +67,4 @@
        });
     </script>
 @endsection
+

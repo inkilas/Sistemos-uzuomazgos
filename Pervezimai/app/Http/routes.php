@@ -35,6 +35,10 @@ Route::patch('orders/provider/{order_key}/{order_id}', 'OrdersController@update'
 Route::delete('orders/provider/{order_key}/{order_id}', 'OrdersController@destroy_provider');
 Route::delete('orders/client/{order_key}/{order_id}', 'OrdersController@destroy_client');
 /**************************************************************/
+/********************Evaluation routes*************************/
+Route::get('evaluate/{provider_id}', 'EvaluationsController@show');
+Route::post('evaluate', 'EvaluationsController@store');
+
 
 Route::resource('auto_registrations', 'Auto_registrationsController');
 

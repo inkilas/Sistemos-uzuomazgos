@@ -5,6 +5,13 @@
         <div class="well well-lg text-center">
             <h1>{{ $auto->auto_name }}</h1>
         </div>
+<!---------------------Sekmingo atnaujinimo zinute------------------------------->
+        @if (Session::has('updated_message'))
+            <div class="alert alert-success">
+                {{ session('updated_message') }}
+            </div>
+        @endif
+
         <table class="table table-bordered">
             <tbody>
                 <tr>
@@ -64,10 +71,28 @@
             </div>
             {!! Form::open(['method' => 'DELETE', 'action' => ['Auto_registrationsController@destroy', $auto->id]]) !!}
                 <div class="col-sm-6">
-                    {!! Form::button('<span class="glyphicon glyphicon-trash"></span>Ištrinti', array('type' => 'submit', 'class' => 'btn btn-primary-red form-control')) !!}
+                    {!! Form::button('<span class="glyphicon glyphicon-trash"></span>Ištrinti', array('id' => 'delete', 'type' => 'submit', 'class' => 'btn btn-primary-red form-control')) !!}
                 </div>
             {!! Form::close() !!}
         </div>
     </div>
 
+@endsection
+
+@section('footer')
+    <script>
+        $('div.alert').delay(5000).slideUp(300);
+    </script>
+
+    <script>
+
+    $(document).ready(function(){
+      $("#delete").click(function(){
+        if (!confirm("Ar tikrai norite ištrinti automobilį?")){
+          return false;
+        }
+      });
+    });
+
+    </script>
 @endsection

@@ -3,12 +3,11 @@
 @section('content')
     <div class="container">
         <div class="well text-center">
-            <h1>Automobilio registracija</h1>
+            <h1> Įvertinkite vartotoją</h1>
         </div>
-
         <div class="col-sm-12">
-            {!! Form::open(['url' => 'auto_registrations']) !!}
-                @include('auto_registrations.form')
+            {!! Form::open('action' => 'EvaluationsController@store') !!}
+                {!!  !!}
             {!! Form::close() !!}
         </div>
     </div>

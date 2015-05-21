@@ -5,6 +5,18 @@
         <div class="well text-center">
             <h1>Pateikite užsakymo duomenis</h1>
         </div>
+
+        @if (count($errors) > 0)
+            <div class="alert alert-danger">
+                Klaida!<br><br>
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         {!! Form::open(['url' => 'orders/search']) !!}
             <div class="form-group">
                 {!! Form::label('category_id', 'Pasirinkite pervežimo kategoriją: ') !!}
