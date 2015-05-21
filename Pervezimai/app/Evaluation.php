@@ -22,7 +22,7 @@ class Evaluation extends Model {
     }
     public function evaluate_client()
     {
-        return $this->belongsTo('App\User', 'client_id');
+        return $this->hasOne('App\User', 'id', 'client_id');
     }
 
 }

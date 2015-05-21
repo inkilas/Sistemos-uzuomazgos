@@ -38,6 +38,7 @@ Route::delete('orders/client/{order_key}/{order_id}', 'OrdersController@destroy_
 /********************Evaluation routes*************************/
 Route::get('evaluate/{provider_id}', 'EvaluationsController@show');
 Route::post('evaluate', 'EvaluationsController@store');
+Route::delete('evaluate/{provider_id}/{client_id}', 'EvaluationsController@destroy');
 
 
 Route::resource('auto_registrations', 'Auto_registrationsController');

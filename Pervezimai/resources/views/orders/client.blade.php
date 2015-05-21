@@ -5,9 +5,14 @@
         <div class="well well-lg text-center">
             <h1>Mano pateikti užsakymai</h1>
         </div>
+        @if (Session::has('flash_message'))
+            <div class="alert alert-success">
+                {{ session('flash_message') }}
+            </div>
+        @endif
 
         @if (Session::has('delete_all_order'))
-            <div class="alert alert-warning">
+            <div class="alert alert-danger">
                 {{ session('delete_all_order') }}
             </div>
         @endif

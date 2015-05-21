@@ -26,27 +26,44 @@ class EvaluationsController extends Controller {
      *
      *
      */
-    public function create($client_id, $provider_id)
+    public function show($provider_id)
     {
-        $provider = User::where('id', $provider_id);
-        $client = User::where('id', Auth::user()->id);
+        $user = User::where('id', $provider_id)->first();
+        $evaluations = Evaluation::where('provider_id', $provider_id)->get();
 
-        return view('users.evaluate', compact('provider', 'client'));
+        return view('users.evaluate', compact('evaluations', 'user'));
 
     }
 
     public function store()
     {
-        $evaluated = Evaluation::where('client_id', Auth::user()->id)->get();
         $evaluation = new Evaluation(Request::all());
-        if($evaluation['evaluation'] < 1 || $evaluation['evaluation'] > 5 || $evaluation['client_id'] != Auth::user()->id){
+        $evaluated = Evaluation::where('client_id', Auth::user()->id)->where('provider_id', $evaluation['provider_id'])->get();
+        if($evaluation['evaluation'] < 1 || $evaluation['evaluation'] > 5 || $evaluation['client_id'] != Auth::user()->id) {
             return '<h1>NEGRAŽU KEISTI KODĄ!!!!!!!!</h1>';
         }
-        if($evaluated[0]->provider_id == $evaluation['provider_id']){
-            return '<h1>Šį vežėją jūs jau įvertinote!!!</h1>';
+        if($evaluated->first()) {
+            if ($evaluated->first()->provider_id == $evaluation['provider_id']) {
+                return 'Šį vežėją jau įvertinote';
+            }
         }
+
         $evaluation->save();
-        return redirect('/');
+        return redirect('orders/client')->with([
+            'flash_message' => 'Įvertinimas pateiktas'
+        ]);
+    }
+
+    public function destroy($provider_id, $client_id)
+    {
+        if($client_id != Auth::user()->id){
+            return '<h1>KAS LEIDO KEISTI KODĄ?????!!!!!!!!?????????!!!!!???</h1>';
+        }
+        $evaluation = Evaluation::where('provider_id', $provider_id)->where('client_id', $client_id)->firstOrFail();
+        $evaluation->delete();
+        return redirect('orders/client')->with([
+        'delete_all_order' => 'Įvertinimas sėkmingai ištrintas'
+        ]);
     }
 
 }
