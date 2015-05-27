@@ -123,7 +123,7 @@ class OrdersController extends Controller {
                 $mailer_order['provider'] = $mailer;
             }
             $mailer_auto = $mailer_order->provider->user_auto()->where('id', $mailer_order->auto_registration_id)->get();
-            Mail::queue('emails.provider_email', array('order_key' => $mailer_order->order_key, 'id' => $mailer_order->id), function($message) use ($mailer_order, $mailer_auto) {
+            Mail::send('emails.provider_email', array('order_key' => $mailer_order->order_key, 'id' => $mailer_order->id), function($message) use ($mailer_order, $mailer_auto) {
                 $message->to( $mailer_order->provider->email, $mailer_order->provider->name. ' ' . $mailer_order->provider->surname)->subject('Užsakymas '. $mailer_order->order_key .' Jūsų automobiliui ' . $mailer_auto[0]->auto_name);
             });
         }
@@ -224,6 +224,17 @@ class OrdersController extends Controller {
         $order->update(['order_activation' => 1]);
         Order::where('order_key', $order_key)->where('order_activation', '!=', '1' )->delete();
         session()->flash('confirm_order', 'Užsakymas '.  $order_key .' buvo sėkmingai patvirtintas!');
+
+        $provider = $order->provider()->firstOrFail()->toArray();
+        $client = $order->client()->firstOrFail();
+        $auto = Auto_registration::where('id', $order->auto_registration_id)->firstOrFail()->toArray();
+        $order_info = $order->toArray();
+
+        Mail::send('emails.client_email', compact('provider', 'auto', 'order_info'), function($message) use($client, $order)
+        {
+           $message->to($client->email, $client->name. ' ' .$client->surname)->subject('Jūsų užsakymas '. $order->order_key .' buvo patvirtintas');
+        });
+
         return redirect('orders/provider');
     }
 

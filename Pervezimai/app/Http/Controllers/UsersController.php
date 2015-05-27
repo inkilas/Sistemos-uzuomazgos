@@ -18,4 +18,9 @@ class UsersController extends Controller {
 
     }
 
+    public function destroy($user_id)
+    {
+        User::where('id', $user_id)->findOrFail($user_id)->delete();
+        return redirect('users');
+    }
 }

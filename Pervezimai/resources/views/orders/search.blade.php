@@ -14,7 +14,10 @@
                 color: blue;
                 font-style: italic;
                 margin-bottom: 15px;
-              } 
+              }
+              .success{
+              color: darkgreen;
+              }
         </style>     
             <script src="http://maps.google.com/maps/api/js?sensor=true&libraries=geometry"></script>
 
