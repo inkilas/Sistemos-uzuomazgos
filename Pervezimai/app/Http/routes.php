@@ -10,7 +10,8 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-Route::get('users', 'UsersController@index'); // kurtas mokymuisi
+Route::get('users', 'UsersController@index'); // vartotojų peržiūrai
+Route::delete('users/{user_id}', 'UsersController@destroy'); // testuojant, vartotojų pašalinimui
 /**************Routes duomenų bazės užpildymui******************/
 Route::get('categories/create', 'CategoryController@create');
 Route::post('categories', 'CategoryController@store');
