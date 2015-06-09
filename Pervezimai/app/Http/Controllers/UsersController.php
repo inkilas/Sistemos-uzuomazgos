@@ -6,8 +6,20 @@ use App\Http\Controllers\Controller;
 
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class UsersController extends Controller {
+
+    /**
+     *
+     * Tik autentifikuotas vartotojas gali prieiti prie šio kontrolerio
+     *
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
 	public function index()
     {
@@ -22,5 +34,42 @@ class UsersController extends Controller {
     {
         User::where('id', $user_id)->findOrFail($user_id)->delete();
         return redirect('users');
+    }
+
+    /**
+     * Aktyvuoja vartotoją
+     *
+     * @param $key
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function update($key)
+    {
+        if(Auth::user()->key != $key){
+            session()->flash('activation_error', 'Neteisinga aktyvacijos nuoroda! Pasitikrinkite paštą arba atsisiūskite naują nuorodą!');
+            return redirect('/');
+        }
+        $user = User::where('key', $key);
+        $user->update(['activation' => 1, 'key' => 'activated']);
+        session()->flash('activation', 'Jūsų paskyra buvo aktyvuota');
+        return redirect('/');
+    }
+
+    public function updatekey($user_id)
+    {
+        $key = str_pad(rand(0, 9999999), 7, '0', STR_PAD_LEFT);
+        $user = User::where('id', Auth::user()->id)->firstOrFail();
+        if($user->activation == 1) {
+            return redirect('/');
+        }
+        $user->update(['key' => $key]);
+        $user = $user->toArray();
+        Mail::send('emails.user_email', array('key' => $user['key']), function($message) use ($user) {
+            $message->to( $user['email'], $user['name']. ' ' . $user['surname'])->subject('Jūsų paskyros aktyvacija');
+        });
+
+        session()->flash('activation', 'Jums buvo išsiūsta nauja aktyvacijos nuoroda į Jūsų elektroninį paštą');
+        session()->flash('activation_resend', true);
+
+        return redirect('/');
     }
 }

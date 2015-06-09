@@ -8,6 +8,13 @@
                 <a class="btn btn-link" href="{{ url('/auth/login') }}">Prisijunk</a>
                 <a class="btn btn-link" href="{{ url('/auth/register') }}">Registruokis</a>
             </div>
+        @elseif(Auth::user()->activation == 0)
+            <div class="col-sm-11">
+                Lankytojau, {{ Auth::user()->name }}, Jūsų paskyra neaktyvuota! <a class="btn btn-link" href="{{ url('/auth/logout') }}">Atsijungti</a>
+                {!! Form::open(['method' => 'PATCH', 'url' => 'users/newkey/' . Auth::user()->id ]) !!}
+                    {!! Form::submit('Gauti naują aktyvacijos nuorodą') !!}
+                {!! Form::close() !!}
+            </div>
         @else
             <div class="col-sm-11">
                 <div class="row">

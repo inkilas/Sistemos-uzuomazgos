@@ -42,6 +42,7 @@ class Registrar implements RegistrarContract {
             'city' => $data['city'],
             'address' => $data['address'],
             'comment' => $data['comment'],
+            'key' =>$data['key']
 		]);
 	}
 

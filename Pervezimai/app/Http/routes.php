@@ -12,6 +12,8 @@
 */
 Route::get('users', 'UsersController@index'); // vartotojų peržiūrai
 Route::delete('users/{user_id}', 'UsersController@destroy'); // testuojant, vartotojų pašalinimui
+Route::get('users/activate/{key}', 'UsersController@update');// aktyvavimas
+Route::patch('users/newkey/{user_id}', 'UsersController@updatekey');
 /**************Routes duomenų bazės užpildymui******************/
 Route::get('categories/create', 'CategoryController@create');
 Route::post('categories', 'CategoryController@store');
