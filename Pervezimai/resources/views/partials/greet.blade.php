@@ -21,6 +21,7 @@
                     <div class="col-sm-4">
                        Sveiki prisijungę! {{Auth::user()->name}}
                         <a class="btn btn-link" href="{{ url('/auth/logout') }}">Atsijungti</a></br>
+                        <a class="btn btn-link" href="{{ url('/users') }}/{{  Auth::user()->id}}/edit">Keisti savo informaciją</a></br>
                     </div>
                 </div>
                 <div class="row">

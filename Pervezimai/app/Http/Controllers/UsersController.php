@@ -4,10 +4,11 @@ use App\User;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-
-use Illuminate\Http\Request;
+use App\Http\Requests\CreateUsersRequest;
+//use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Request;
 
 class UsersController extends Controller {
 
@@ -70,6 +71,24 @@ class UsersController extends Controller {
         session()->flash('activation', 'Jums buvo išsiūsta nauja aktyvacijos nuoroda į Jūsų elektroninį paštą');
         session()->flash('activation_resend', true);
 
+        return redirect('/');
+    }
+
+    public function edit($user_id)
+    {
+        if($user_id != Auth::user()->id){
+            return "NEKEISK KODO!!!!";
+        }
+        $user = User::where('id', Auth::user()->id)->firstOrFail();
+        return view('users.edit', compact('user'));
+    }
+
+    public function editupdate(CreateUsersRequest $request, $user_id)
+    {
+        $user = User::where('id', Auth::user()->id)->firstOrFail();
+        $user->update($request->all());
+
+        session()->flash('activation', 'Informacija atnaujinta');
         return redirect('/');
     }
 }

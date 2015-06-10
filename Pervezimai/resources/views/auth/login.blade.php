@@ -49,7 +49,7 @@
 							<div class="col-md-6 col-md-offset-4">
 								<button type="submit" class="btn btn-primary">Prisijungti</button></br>
 
-								<a class="btn btn-link" href="{{ url('/password/email') }}">Pamiršote slaptažodį?</a></br>
+						<!--		<a class="btn btn-link" href="{{ url('/password/email') }}">Pamiršote slaptažodį?</a></br> -->
 								<a class="btn btn-link" href="{{ url('/auth/register') }}">Naujas vartotojas?</a>
 							</div>
 						</div>

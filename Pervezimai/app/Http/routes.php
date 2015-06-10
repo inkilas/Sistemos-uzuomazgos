@@ -14,6 +14,8 @@ Route::get('users', 'UsersController@index'); // vartotojų peržiūrai
 Route::delete('users/{user_id}', 'UsersController@destroy'); // testuojant, vartotojų pašalinimui
 Route::get('users/activate/{key}', 'UsersController@update');// aktyvavimas
 Route::patch('users/newkey/{user_id}', 'UsersController@updatekey');
+Route::get('users/{user_id}/edit', 'UsersController@edit');
+Route::patch('users/{user_id}', 'UsersController@editupdate');
 /**************Routes duomenų bazės užpildymui******************/
 Route::get('categories/create', 'CategoryController@create');
 Route::post('categories', 'CategoryController@store');
@@ -37,6 +39,7 @@ Route::get('orders/provider/{order_key}/{order_id}', 'OrdersController@showprovi
 Route::patch('orders/provider/{order_key}/{order_id}', 'OrdersController@update');
 Route::delete('orders/provider/{order_key}/{order_id}', 'OrdersController@destroy_provider');
 Route::delete('orders/client/{order_key}/{order_id}', 'OrdersController@destroy_client');
+
 /**************************************************************/
 /********************Evaluation routes*************************/
 Route::get('evaluate/{provider_id}', 'EvaluationsController@show');
