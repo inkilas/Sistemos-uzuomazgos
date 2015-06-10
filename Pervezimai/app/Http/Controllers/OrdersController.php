@@ -42,6 +42,7 @@ class OrdersController extends Controller {
         $categories = Category::lists('category', 'id');
         $countries = Country::lists('country', 'id');
         $number = str_pad(rand(0, 9999), 4, '0', STR_PAD_LEFT);
+
         return view('orders.create', compact('categories', 'number', 'countries'));
     }
 

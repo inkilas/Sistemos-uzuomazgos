@@ -21,6 +21,7 @@ class Registrar implements RegistrarContract {
 			'password' => 'required|confirmed|min:6',
             'city' => 'required|max:255',
             'address' => 'required|max:255',
+            'phone' => 'numeric'
 		]);
 	}
 
@@ -42,6 +43,7 @@ class Registrar implements RegistrarContract {
             'city' => $data['city'],
             'address' => $data['address'],
             'comment' => $data['comment'],
+            'key' =>$data['key']
 		]);
 	}
 

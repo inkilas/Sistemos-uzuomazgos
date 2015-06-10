@@ -35,8 +35,23 @@ class Auto_registrationRequest extends Request {
             'category_list' => 'required',
             'auto_id' => 'required',
             'auto_city' => 'required',
-            'auto_comment' => 'required|max:500',
+            'auto_comment' => 'required|min:20|max:500',
 		];
 	}
+
+    public function messages()
+    {
+        return[
+            'auto_name.required' => 'Prašome įvesti automobilio pavadinimą',
+            'country_list.required' => 'Pasirinkite bent vieną šalį!',
+            'category_list.required' => 'Pasirinkite bent vieną kategoriją',
+            'auto_id.required' => 'Pasirinkite automobilio tipą',
+            'auto_city.required' => 'Įveskite automobilio adresą arba miestą',
+            'auto_comment.required' => 'Prašome aprašyti savo automobilį',
+            'auto_comment.min' => 'Automobilio aprašymas turėtų būti bent iš 20 simbolių',
+            'auto_comment.max' => 'Automobilio aprašymas neturėtų viršyti 500 simbolių',
+
+        ];
+    }
 
 }
