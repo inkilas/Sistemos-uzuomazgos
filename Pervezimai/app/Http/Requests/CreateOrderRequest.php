@@ -31,8 +31,22 @@ class CreateOrderRequest extends Request {
             'pickup_address' => 'required',
             'deliver_address' => 'required',
             'order_date' => 'required',
-            'order_comment' => 'required'
+            'order_comment' => 'required|min:20|max:500'
 		];
 	}
+
+    public function messages()
+    {
+        return[
+            'category_id.required' => 'Prašome pasirinkti kategoriją',
+            'pickup_address.required' => 'Prašome įvesti paėmimo adresą!',
+            'deliver_address.required' => 'Prašome įvesti pristatymo adresą',
+            'order_date.required' => 'Įveskite datą',
+            'order_comment.required' => 'Aprašykite savo užsakymą',
+            'order_comment.min' => 'Užsakymo aprašymas turėtų būti bent iš 20 simbolių',
+            'order_comment.max' => 'Užsakymo aprašymas neturėtų viršyti 500 simbolių',
+
+        ];
+    }
 
 }

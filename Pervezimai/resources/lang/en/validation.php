@@ -28,13 +28,13 @@ return [
 		"array"   => "The :attribute must have between :min and :max items.",
 	],
 	"boolean"              => "The :attribute field must be true or false.",
-	"confirmed"            => "The :attribute confirmation does not match.",
+	"confirmed"            => ":attribute nesutampa.",
 	"date"                 => "The :attribute is not a valid date.",
 	"date_format"          => "The :attribute does not match the format :format.",
 	"different"            => "The :attribute and :other must be different.",
 	"digits"               => "The :attribute must be :digits digits.",
 	"digits_between"       => "The :attribute must be between :min and :max digits.",
-	"email"                => "The :attribute must be a valid email address.",
+	"email"                => "Neteisingas :attribute formatas.",
 	"filled"               => "The :attribute field is required.",
 	"exists"               => "The selected :attribute is invalid.",
 	"image"                => "The :attribute must be an image.",
@@ -42,22 +42,22 @@ return [
 	"integer"              => "The :attribute must be an integer.",
 	"ip"                   => "The :attribute must be a valid IP address.",
 	"max"                  => [
-		"numeric" => "The :attribute may not be greater than :max.",
+		"numeric" => ":attribute negali viršyti :max skaičių.",
 		"file"    => "The :attribute may not be greater than :max kilobytes.",
-		"string"  => "The :attribute may not be greater than :max characters.",
+		"string"  => ":attribute negali viršyti :max simbolių.",
 		"array"   => "The :attribute may not have more than :max items.",
 	],
 	"mimes"                => "The :attribute must be a file of type: :values.",
 	"min"                  => [
-		"numeric" => "The :attribute must be at least :min.",
+		"numeric" => ":attribute turi būti bent iš :min skaičių.",
 		"file"    => "The :attribute must be at least :min kilobytes.",
-		"string"  => "The :attribute must be at least :min characters.",
+		"string"  => ":attribute turi būti bent iš :min simbolių.",
 		"array"   => "The :attribute must have at least :min items.",
 	],
 	"not_in"               => "The selected :attribute is invalid.",
-	"numeric"              => "The :attribute must be a number.",
+	"numeric"              => ":attribute turi būti tik iš skaičių.",
 	"regex"                => "The :attribute format is invalid.",
-	"required"             => "The :attribute field is required.",
+	"required"             => "Neįvestas :attribute",
 	"required_if"          => "The :attribute field is required when :other is :value.",
 	"required_with"        => "The :attribute field is required when :values is present.",
 	"required_with_all"    => "The :attribute field is required when :values is present.",
@@ -70,7 +70,7 @@ return [
 		"string"  => "The :attribute must be :size characters.",
 		"array"   => "The :attribute must contain :size items.",
 	],
-	"unique"               => "The :attribute has already been taken.",
+	"unique"               => "Toks :attribute jau egzistuoja.",
 	"url"                  => "The :attribute format is invalid.",
 	"timezone"             => "The :attribute must be a valid zone.",
 
@@ -86,8 +86,8 @@ return [
 	*/
 
 	'custom' => [
-		'attribute-name' => [
-			'rule-name' => 'custom-message',
+		'surname' => [
+			'required' => 'Neįvesta pavardė',
 		],
 	],
 
@@ -102,6 +102,14 @@ return [
 	|
 	*/
 
-	'attributes' => [],
+	'attributes' => [
+        'name' => 'vardas',
+        'surname' => 'pavardę',
+        'email' => 'E-Mail',
+        'password' => 'slaptažodis',
+        'city' => 'miestas',
+        'address' => 'adresas',
+        'phone' => 'Telefono numeris'
+    ],
 
 ];
